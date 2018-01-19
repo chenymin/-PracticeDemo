@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <title>Document</title>
+  <style>
+    body,
+    html {
+      color: #263238;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+
+    .header {
+      background-color: #fbcbcd;
+    }
+
+
+    .app-menu-line {
+      background-color: #fff;
+      border-radius: 2px;
+      height: 2px;
+      transition: all 500ms ease;
+      width: 20px;
+    }
+
+    .app-menu-line:not(:first-child) {
+      margin-top: 4px;
+    }
+
+    .header .app-menu-burger {
+      padding: 5px 10px 0;
+    }
+
+    .header-top {
+      color: #fff;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      flex-direction: row;
+      height: 44px;
+      padding: 10px;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-box-align: center;
+      -webkit-box-direction: normal;
+      -webkit-box-orient: horizontal;
+      -ms-flex-align: center;
+      -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+      -webkit-flex-wrap: nowrap;
+      -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+    }
+
+
+    .top {
+      background-image: url("https://s-media-cache-ak0.pinimg.com/564x/90/d8/cb/90d8cb29ade0f3e492ddb8cc5c46334b.jpg");
+      background-repeat: repeat;
+    }
+
+    .top .top-overlay {
+      background: rgb(255, 255, 255) transparent;
+      background: rgba(255, 255, 255, 0.6);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+      -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+      padding: 51px;
+    }
+
+    .top img {
+      left: 50%;
+      position: relative;
+      transform: translateX(-50%);
+      border: 4px solid #fac1c3;
+      border-radius: 50%;
+    }
+
+    .bottom {
+      overflow-y: auto;
+    }
+
+    .bottom .list-item {
+      margin: 10px 0;
+      padding: 15px 20px;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    /* Menu */
+
+    .menu {
+      position: fixed;
+      left: 0;
+      top: 44px;
+      width: 0;
+      height: 0;
+      z-index: 150;
+    }
+
+    .app-menu-container {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      height: 100%;
+      -webkit-transform: translateX(-98%);
+      transform: translateX(-98vw);
+      z-index: 170;
+    }
+
+    .app-menu {
+      background-color: #ffffff;
+      color: #263238;
+      position: fixed;
+      max-width: 350px;
+      width: 90%;
+      height: 100%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      will-change: transform;
+      z-index: 160;
+      pointer-events: auto;
+    }
+
+    .menu--visible .app-menu-container {
+      -webkit-transform: none;
+      transform: none;
+      pointer-events: none;
+    }
+
+    .menu--animatable .app-menu-container {
+      transition: all 130ms ease-in;
+    }
+
+    .menu--visible.menu--animatable .app-menu-container {
+      transition: all 330ms ease-out;
+    }
+
+    .menu-background {
+      content: '';
+      display: block;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      will-change: opacity;
+      display: none;
+      transition: opacity 0.3s cubic-bezier(0, 0, 0.3, 1);
+    }
+
+    .menu--visible .menu-background {
+      opacity: 0.5;
+      pointer-events: auto;
+    }
+
+    .menu--background-visible .menu-background {
+      display: block;
+    }
+
+    .app-menu-open .app-menu {
+      -webkit-transform: none;
+      transform: none;
+      transition: all 300ms ease-out;
+    }
+
+    .menu--background-visible .app-menu-background {
+      display: block;
+    }
+
+    .no-transition {
+      transition: none !important;
+    }
+
+    .app-menu-background {
+      background-color: rgba(0, 0, 0, 0.4);
+      display: none;
+      height: 100%;
+      opacity: 0;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+
+    .center-content {
+      height: 100%;
+      width: 100%;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+    }
+
+    .center-content-container {
+      width: 100%;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      -ms-flex-align: center;
+      align-items: center;
+    }
+
+    h1 {
+      color: #fbcbcd;
+      font-size: 28px;
+      font-weight: initial;
+      letter-spacing: -0.45px;
+      margin: 0;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: initial;
+      letter-spacing: 0.8px;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+    <div class="header">
+      <div class="header-top">
+        <div data-link="" class="app-menu-burger OSFillParent" href="#" id="b2-Menu">
+          <div data-container="" class="app-menu-line"></div>
+          <div data-container="" class="app-menu-line OSAutoMarginTop"></div>
+          <div data-container="" class="app-menu-line OSAutoMarginTop"></div>
+        </div>
+      </div>
+    </div>
+
+    <div data-container="" class="center-content">
+      <div class="center-content-header ph" id="b3-Top"></div>
+      <div class="center-content-container ph" id="b3-Center">
+        <div data-container="">
+          <div data-container="" style="text-align: center;">
+            <img data-image="" src="https://s11.postimg.org/409mhl043/icon.png">
+          </div>
+          <div data-container="" class="OSAutoMarginTop" style="text-align: center;">
+            <h1>
+              <!-- react-text: 75 -->Welcome!
+              <!-- /react-text -->
+              <br>
+            </h1>
+            <h3>
+              <!-- react-text: 78 -->the question is not: why alpacas?
+              <!-- /react-text -->
+              <br>
+              <!-- react-text: 80 -->the question is: why not?
+              <!-- /react-text -->
+            </h3>
+          </div>
+        </div>
+      </div>
+      <div class="center-content-bottom ph" id="b3-Bottom"></div>
+    </div>
+
+    <div class="menu">
+      <div class="menu-background" style="cursor: pointer;"></div>
+      <div class="app-menu-container">
+        <div class="app-menu">
+          <div class="top">
+            <div class="top-overlay">
+              <img src="https://s11.postimg.org/409mhl043/icon.png" width=80>
+            </div>
+          </div>
+          <div class="bottom">
+            <div class="list-item">Welcome</div>
+            <div class="list-item">Fancy Time</div>
+            <div class="list-item">Tea Time</div>
+            <div class="list-item">Adventure Time</div>
+            <div class="list-item">Puzzle Time</div>
+            <div class="list-item">Sports Time</div>
+            <div class="list-item">Star Wars Time</div>
+            <div class="list-item">Internet Time</div>
+            <div class="list-item">Sushi Time</div>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var trackableElement;
+    var menu = document.querySelector(".menu");
+    var appMenu = document.querySelector(".app-menu-container");
+    var overlay = document.querySelector(".menu-background");
+    var burger = document.querySelector(".app-menu-burger");
+
+    var touchingElement = false;
+    var startTime;
+    var startX = 0,
+        startY = 0;
+    var currentX = 0,
+        currentY = 0;
+
+    var isOpen = false;
+    var isMoving = false;
+    var menuWidth = 0;
+    var lastX = 0;
+    var lastY = 0;
+    var moveX = 0; // where in the screen is the menu currently
+    var dragDirection = "";
+    var maxOpacity = 0.5; // in case if you want to change this, don"t forget to change the value of the opacity in the css class .menu--visible .menu-background
+
+    var init = function (element, start, move, end) {
+      trackableElement = element;
+
+      startTime = new Date().getTime(); // start time of the touch
+
+      addEventListeners();
+    }
+
+    var addEventListeners = function () {
+      trackableElement.addEventListener("touchstart", onTouchStart, false);
+      trackableElement.addEventListener("touchmove", onTouchMove, false);
+      trackableElement.addEventListener("touchend", onTouchEnd, false);
+
+
+      overlay.addEventListener("click", closeMenuOverlay, false); // I want to be able to click the overlay and immediately close the menu (in the space between the actual menu and the page behind it)
+      burger.addEventListener("click", clickOpenMenu, false); // I want to be able to click the burger and immediately open the menu
+    }
+
+    function onTouchStart(evt) {
+      startTime = new Date().getTime();
+      startX = evt.touches[0].pageX;
+      startY = evt.touches[0].pageY;
+
+      touchingElement = true;
+
+      touchStart(startX, startY)
+
+    }
+
+    function onTouchMove(evt) {
+      if (!touchingElement)
+        return;
+
+      currentX = evt.touches[0].pageX;
+      currentY = evt.touches[0].pageY;
+      const translateX = currentX - startX; // distance moved in the x axis
+      const translateY = currentY - startY; // distance moved in the y axis
+
+      touchMove(evt, currentX, currentY, translateX, translateY)
+    }
+
+    function onTouchEnd(evt) {
+
+      if (!touchingElement)
+        return;
+
+      touchingElement = false;
+      const translateX = currentX - startX; // distance moved in the x axis
+      const translateY = currentY - startY; // distance moved in the y axis
+
+      const timeTaken = (new Date().getTime() - startTime);
+
+      touchEnd(currentX, currentY, translateX, translateY, timeTaken)
+    }
+
+
+    function touchStart(startX, startY) {
+      var menuOpen = document.querySelector(".menu.menu--visible");
+
+      if (menuOpen !== null) {
+        isOpen = true;
+      } else {
+        isOpen = false;
+      }
+
+      menu.classList.add("no-transition");
+      appMenu.classList.add("no-transition");
+
+      isMoving = true;
+      menuWidth = document.querySelector(".app-menu").offsetWidth;
+      lastX = startX;
+      lastY = startY;
+
+      if (isOpen) {
+        moveX = 0;
+      } else {
+        moveX = -menuWidth;
+      }
+
+      dragDirection = "";
+      menu.classList.add("menu--background-visible");
+    }
+
+    function touchMove(evt, currentX, currentY, translateX, translateY) {
+      if (!dragDirection) {
+        if (Math.abs(translateX) >= Math.abs(translateY)) {
+          dragDirection = "horizontal";
+        } else {
+          dragDirection = "vertical";
+        }
+
+        requestAnimationFrame(updateUi); // this is what effectively does the animation (ﾉ◕ヮ◕)ﾉ*:・ﾟ✧
+      }
+      if (dragDirection === "vertical") {
+        lastX = currentX;
+        lastY = currentY;
+      } else {
+        evt.preventDefault();
+        if (moveX + (currentX - lastX) < 0 && moveX + (currentX - lastX) > -menuWidth) {
+          moveX = moveX + (currentX - lastX);
+        }
+
+        lastX = currentX;
+        lastY = currentY;
+
+        overlay.classList.add("no-transition");
+
+        var percentageBeforeDif = (Math.abs(moveX) * 100) / menuWidth;
+        var percentage = 100 - percentageBeforeDif;
+
+        var newOpacity = (((maxOpacity) * percentage) / 100);
+
+        if (overlay.style.opacity !== newOpacity.toFixed(2) && newOpacity.toFixed(1) % 1 !== 0) {
+          overlay.style.opacity = newOpacity.toFixed(2);
+        }
+
+      }
+    }
+
+    function touchEnd(currentX, currentY, translateX, translateY, timeTaken) {
+      isMoving = false;
+      var velocity = 0.3;
+
+      if (currentX === 0 && currentY === 0) {
+        if (isOpen) {
+          appMenu.classList.remove("no-transition");
+          menu.classList.remove("no-transition");
+        } else {
+          menu.classList.remove("menu--background-visible");
+          menu.classList.remove("no-transition");
+
+        }
+      } else {
+        if (isOpen) {
+          if ((translateX < (-menuWidth) / 2) || (Math.abs(translateX) / timeTaken > velocity)) {
+            closeMenu(translateX);
+            isOpen = false;
+          } else {
+            openMenu();
+            isOpen = true;
+          }
+        } else {
+          if (translateX > menuWidth / 2 || (Math.abs(translateX) / timeTaken > velocity)) {
+            openMenu();
+            isOpen = true;
+          } else {
+            closeMenu(translateX);
+            isOpen = false;
+          }
+
+        }
+      }
+
+      menu.classList.remove("no-transition");
+      appMenu.classList.remove("no-transition");
+
+      overlay.classList.remove("no-transition");
+
+      menu.classList.add("menu--animatable");
+    }
+
+    function updateUi() {
+      if (isMoving) {
+        var element = document.querySelector(".app-menu-container");
+
+        element.style.transform = "translateX(" + moveX + "px)";
+        element.style.webkitTransform = "translateX(" + moveX + "px)";
+
+        requestAnimationFrame(updateUi);
+      }
+    }
+
+    function closeMenu(translateX) {
+
+      function OnTransitionEnd() {
+        overlay.style.opacity = "";
+        overlay.style.display = "";
+
+        menu.classList.remove("menu--background-visible");
+        menu.classList.remove("menu--animatable");
+        menu.removeEventListener("transitionend", OnTransitionEnd, false);
+      }
+
+      if (translateX < 0 || !isOpen) {
+        appMenu.style.transform = "";
+        appMenu.style.webkitTransform = "";
+
+        menu.classList.remove("menu--background-visible");
+        menu.classList.remove("menu--visible");
+
+        menu.addEventListener("transitionend", OnTransitionEnd, false);
+      }
+    }
+
+    function openMenu() {
+
+      appMenu.style.transform = "";
+      appMenu.style.webkitTransform = "";
+
+      menu.classList.add("menu--visible");
+      menu.classList.add("menu--background-visible");
+
+      overlay.style.opacity = "";
+    }
+
+    function closeMenuOverlay() {
+      function OnTransitionEnd() {
+        menu.classList.remove("menu--background-visible");
+        menu.classList.remove("menu--animatable");
+        overlay.style.display = "";
+
+        menu.removeEventListener("transitionend", OnTransitionEnd);
+      }
+
+      menu.addEventListener("transitionend", OnTransitionEnd, false);
+
+      menu.classList.remove("menu--visible");
+    }
+
+    function clickOpenMenu() {
+
+      menu.classList.add("menu--background-visible");
+
+      requestAnimationFrame(function () {
+        setTimeout(function () {
+          menu.classList.add("menu--visible");
+          menu.classList.add("menu--animatable");
+        }, 1)
+      });
+    }
+
+    init(document.querySelector(".app-menu-container"));
+
+  });
+</script>
+
+</html>
