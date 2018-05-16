@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 只执行一次函数
+    // function once (fn) {
+    //   let returnValue;
+    //   let canRun = true;
+    //   return function runOnce () {
+    //     if (canRun) {
+    //       returnValue = fn.apply(this, arguments);
+    //       canRun = false;
+    //     }
+    //     return returnValue
+    //   }
+    // }
+
+    // function process () {
+    //   console.log('process')
+    // }
+    // var processonce = once(process);
+    // processonce(); //process
+    // processonce(); //
+
+    // after 函数 有什么作用？
+    // function after (count, fn) {
+    //   let runCount = 0;
+    //   return function runAfter () {
+    //     runCount = runCount + 1;
+    //     if (runCount >= count) {
+    //       return fn.apply(this, arguments);        
+    //     }
+    //   } 
+    // }
+
+    // function logResult() { 
+    //   console.log("calls have finished"); 
+    // }
+    // let logResultAfter2Calls = after(2, logResult);
+
+    // setTimeout(function logFirstCall() { 
+    //       console.log("1st call has finished"); 
+    //       logResultAfter2Calls(); 
+    // }, 3000);
+
+    // setTimeout(function logSecondCall() { 
+    //       console.log("2nd call has finished"); 
+    //       logResultAfter2Calls(); 
+    // }, 4000);
+
+    // 局部函数 partial()
+    // Function.prototype.partial = function(...leftArguments){
+    //   let fn = this;
+    //   return function partialFn(...rightArguments){
+    //     let args = leftArguments.concat(rightArguments);
+    //     return fn.apply(this, args);
+    //   }
+    // }
+
+    // function log(level, message){
+    //   console.log(level  + " : " + message);
+    // }
+    // let logInfo = log.partial("Info");
+    // logInfo("here is a message");
+
+    // Function.prototype.partialRight = function(...rightArguments){
+    //   let fn = this;
+    //   return function partialRightFn(...leftArguments){
+    //       let args = leftArguments
+    //                 .slice(0, fn.length - rightArguments.length)
+    //                 .concat(rightArguments);
+    //       return fn.apply(this, args);
+    //   }
+    // }
+    // function isOfType(item, type, aa){
+    //   console.log(item  + " : " + type);
+    // }
+    // let isReview = isOfType.partialRight("isReview", '22', '33'); // 参数超过isOfType.length参数的个数isReview()的方法参数将被忽略
+    // isReview({});
+
+    // 分时加载  就是利用setInterval 函数分段加载数据当数据为空时，结束setInterval
+    function timeChunk(data, fn, count = 1, wait) {
+      let obj, timer;
+
+      function start() {
+        let len = Math.min(count, data.length);
+        for (let i = 0; i < len; i++) {
+          val = data.shift(); // 每次取出一个数据，传给fn当做值来用
+          fn(val);
+        }
+      }
+
+      return function () {
+        timer = setInterval(function () {
+          if (data.length === 0) { // 如果数据为空了，就清空定时器
+            return clearInterval(timer);
+          }
+          start();
+        }, wait); // 分批执行的时间间隔
+      }
+    }
+
+    // 测试用例
+    let arr = [];
+    for (let i = 0; i < 100000; i++) { // 这里跑了10万数据
+      arr.push(i);
+    }
+    let render = timeChunk(arr, function (n) { // n为data.shift()取到的数据
+      let div = document.createElement('div');
+      div.innerHTML = n;
+      document.body.appendChild(div);
+    }, 8, 20);
+
+    // render();
+
+    // 懒加载 第一次执行通过条件判断，重写函数，第二次运行时就不需要再执行条件判断，可以优化效率
+    // 常规的是这样写的
+    // let addEvent = function(ele, type, fn) {
+    //     if (window.addEventListener) {
+    //         return ele.addEventListener(type, fn, false);
+    //     } else if (window.attachEvent) {
+    //         return ele.attachEvent('on' + type, function() {
+    //             fn.call(ele);
+    //         });
+    //     }
+    // };
+
+    // 懒加载 第一次执行通过条件判断，重写函数，第二次运行时就不需要再执行条件判断，可以优化效率
+    // let addEvent = function(ele, type, fn) {
+    //   if (window.addEventListener) {
+    //       addEvent = function(ele, type, fn) {
+    //           ele.addEventListener(type, fn, false);
+    //       }
+    //   } else  if (window.attachEvent) {
+    //       addEvent = function(ele, type, fn) {
+    //           ele.attachEvent('on' + type, function() {
+    //               fn.call(ele)
+    //           });
+    //       }
+    //   }
+    // };
+
+    // 绑定函数  
+    Function.prototype.bind = function (context) {
+      var _this = this;
+      var _args = Array.prototype.slice.call(arguments, 1);
+      return function () {
+        return _this.apply(context, _args.concat(Array.prototype.slice.call(arguments)));
+      }
+    }
+
+    // 函数柯里化
+    // 科里化( currying ); 又称部分求值，是把接受多个参数的函数变换成接受一个单一参数的函数，
+    // 并且返回接受余下的参数并且返回结果的新函数的技术。
+    // 使用currying函数, 便可以延迟到最后一刻才一起计算, 好处不言而喻, 在很多场合可以避免无谓的计算, 节省性能, 也是实现惰性求值的一种方案
+    var curry = function (fn) {
+      var _args = [];
+      return function () {
+        if (arguments.length === 0) {
+          return fn.apply(this, _args)
+        }
+
+        [].push.apply(_args, arguments)
+        // arguments.callee 返回当前正在执行的函数
+        return arguments.callee
+      }
+    }
+
+    var monthly_cost = 0;
+    var monthly_cost_fn = curry(function () {
+      for (var i = 0, c; c = arguments[i++];) {
+        monthly_cost += c
+      }
+      return monthly_cost
+    });
+
+    monthly_cost_fn(100)
+    monthly_cost_fn(200)
+    monthly_cost_fn(300)
+    // console.log(monthly_cost_fn())
+
+    // 函数返柯里化 
+    // 参考链接：http://www.alloyteam.com/2013/08/javascript-zhong-you-qu-di-fan-ke-li-hua-ji-shu/#prettyPhoto
+    Function.prototype.uncurrying = function () {
+      var _this = this;
+      return function () {
+        return Function.prototype.call.apply(_this, arguments)
+      }
+    }
+
+    var obj = {}
+    var push = Array.prototype.push.uncurrying()
+    push(obj, 'first')
+    // console.log(obj)
+
+    // 记忆函数
+    function add(a, b) {
+      return a + b
+    }
+    var memoize = function (func, hasher) {
+      var memoize = function (key) {
+        var cache = memoize.cache;
+        var address = '' + (hasher ? hasher.apply(this, arguments) : key);
+        if (!cache[address]) {
+          cache[address] = func.apply(this, arguments);
+        }
+        return cache[address];
+      };
+      memoize.cache = {};
+      return memoize;
+    };
+    // addMemoize = memoize(add)
+    // console.log(addMemoize(1,2)) // 3
+    // console.log(addMemoize(1,3)) // 3
+
+    var memoizedAdd1 = memoize(add, function () {
+      var args = Array.prototype.slice.call(arguments)
+      return JSON.stringify(args)
+    })
+
+    // console.log(memoizedAdd1(1, 2)) // 3
+    // console.log(memoizedAdd1(1, 3)) // 4
+    // console.log(memoizedAdd1(1, 2)) // 3
+
+    var count = 0;
+    var fibonacci = function (n) {
+      count++;
+      return n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
+    };
+    fibonacci = memoize(fibonacci)
+    for (var i = 0; i <= 10; i++) {
+      fibonacci(i)
+    }
+    // console.log(count) // 12
+  </script>
+</body>
+
+</html>

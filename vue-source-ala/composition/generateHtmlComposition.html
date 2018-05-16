@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const compose = (...functions) => data =>
+      functions.reduceRight((value, func) => func(value), data)
+
+    const encodeAttribute = (x = '') =>
+      x.replace(/"/g, '&quot;')
+
+    const toAttributeString = (x = {}) =>
+      Object.keys(x)
+      .map(attr => `${encodeAttribute(attr)}="${encodeAttribute(x[attr])}"`)
+      .join(' ')
+
+    const tagAttributes = x => (c = '') =>
+      `<${x.tag}${x.attr?' ':''}${toAttributeString(x.attr)}>${c}</${x.tag}>`
+
+    const tag = x =>
+      typeof x === 'string' ?
+      tagAttributes({
+        tag: x
+      }) :
+      tagAttributes(x)
+
+    const listGroup = tag({
+      tag: 'ul',
+      attr: {
+        class: 'list-group'
+      }
+    })
+    const listGroupItem = tag({
+      tag: 'li',
+      attr: {
+        class: 'list-group-item'
+      }
+    })
+    const listGroupItems = items =>
+      items.map(listGroupItem)
+      .join('')
+
+    listGroup()
+    // <ul class="list-group"></ul>
+
+    listGroupItem('Cras justo')
+    // <li class="list-group-item">Cras justo</li>
+
+    listGroupItems(['Cras justo', 'Dapibus ac'])
+    // <li class='list-group-item'>Cras justo</li>
+    // <li class='list-group-item'>Dapibus ac</li>
+
+    listGroup(listGroupItems(['Cras justo', 'Dapibus ac']))
+    // <ul class='list-group'>
+    //   <li class='list-group-item'>Cras justo</li>
+    //   <li class='list-group-item'>Dapibus ac</li>
+    // </ul>
+
+    const str = compose(listGroup, listGroupItems)(['Cras justo1', 'Dapibus ac2', 'Cras justo3', 'Dapibus ac4'])
+    console.log(str)
+  </script>
+</body>
+
+</html>

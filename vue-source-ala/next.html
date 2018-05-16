@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // next 方法
+    let series = function (arr) {
+      let next = function (data) {
+        let fn = arr.shift();
+        if (!fn) {
+          return;
+        }
+        fn(next, data);
+      };
+      next();
+    };
+
+    // 使用方法
+    let str = "";
+    series([
+      function (next) {
+        setTimeout(function () {
+          str = "Hello"
+          next(str);
+        }, 100);
+      },
+      function (next, data) {
+        setTimeout(function () {
+          str += "World"
+          console.log(str)
+          console.log(data);
+          next();
+        });
+      }
+    ]);
+
+
+    // 参考2
+    let parallel = function (arr, finnaly) {
+      let fn,
+        index = 0;
+      let statusArr = Array(arr.length)
+        .fill()
+        .map(() => ({
+          isActive: false,
+          data: null
+        }));
+      let isFinished = function () {
+        return statusArr.every(item => {
+          return item.isActive === true;
+        });
+      };
+      let resolve = function (index) {
+        return function (data) {
+          statusArr[index].data = data;
+          statusArr[index].isActive = true;
+          let isFinish = isFinished();
+          if (isFinish) {
+            let datas = statusArr.map(item => {
+              return item.data;
+            });
+            finnaly(datas);
+          }
+        };
+      };
+      while ((fn = arr.shift())) {
+        // 给resolve函数追加参数,可以使用bind函数实现,这里使用了柯里化
+        fn(resolve(index));
+        index++;
+      }
+    };
+
+    // 使用方法
+    let str = "";
+    parallel(
+      [
+        function (resolve) {
+          setTimeout(function () {
+            str = "Hello";
+            resolve("Hello");
+          }, 1000);
+        },
+        function (resolve) {
+          setTimeout(function () {
+            str += "World";
+            resolve("World");
+          }, 20);
+        }
+      ],
+      function (datas) {
+        console.log("finily", datas);
+      }
+    );
+
+    // 并行  
+    let datas = await Promise.all([
+      new Promise(resolve => {
+        console.log('---->1')
+        setTimeout(resolve.bind(this, 10), 1000);
+      }),
+      new Promise(resolve => {
+        console.log('---->2')
+        setTimeout(resolve.bind(this, 12), 2000);
+      })
+    ])
+  </script>
+</body>
+
+</html>

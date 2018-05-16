@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>大数相乘算法</title>
+  <style>
+    .move_box {
+      position: absolute;
+      left: 0;
+      top:0;
+      width: 150px;
+      height: 150px;
+      background-color: blue;
+    }
+  </style>
+</head>
+<body>
+  <p>大数相乘</p>
+  <div id="moveBox" class="move_box">
+  </div>
+  
+	  <script>  
+	  
+		window.onload = function(){  
+			var outA = document.getElementById("outA");    
+			var outB = document.getElementById("outB");    
+			var outC = document.getElementById("outC");    
+			  
+			// 目标  
+			outC.addEventListener('click',function(event){alert("target");},false);  
+	  
+			// 事件捕获  
+			outA.addEventListener('click',function(){alert("capture");event.stopPropagation();},true);        
+			
+			
+			// 事件冒泡  
+			outA.addEventListener('click',function(){alert("bubble");},false);  
+			
+		};  
+	   
+	</script>  
+  
+	<div id="outA" style="width:400px; height:400px; background:#CDC9C9;position:relative;">  
+        <div id="outB" style="height:200; background:#0000ff;top:100px;position:relative;">  
+            <div id="outC" style="height:100px; background:#FFB90F;top:50px;position:relative;"></div>   
+        </div>  
+   </div>  
+
+  <script>
+    function bigNumberMultiply (multiplierNum, multiplicativeNum) {
+      var multiplierArr = getValueArr(multiplierNum);
+      var multiplicativeArr = getValueArr(multiplicativeNum);
+      var resultList = [0]
+
+      for (var i = 0, len = multiplicativeArr.length; i < len; i++) {
+        for (var j = 0, len2 = multiplierArr.length; j < len2; j++) {
+          var result = multiplierArr[j] * multiplicativeArr[i]
+          resultList[i + j + 1] = (resultList[i + j + 1] || 0) + result;
+        }
+      }
+      console.log(resultList)
+      for (var i = resultList.length - 1; i >= 0; i--) {
+       var val = resultList[i] || 0
+      //  console.log(val)
+       if (val > 10) {
+        resultList[i - 1] += parseInt(resultList[i] / 10);
+        resultList[i] = parseInt(resultList[i] % 10);
+       }
+      }
+      return resultList
+    }
+
+    function getValueArr (val) {
+      return val && typeof val === 'number' ? val.toString().split('') : val.split('')
+    }
+    // console.log(bigNumberMultiply(23, 19))
+
+    // var box = document.getElementById('moveBox')
+    // box.onmousedown = down;
+    // document.onmousemove = throttle(move, 100, 500);
+    // document.onmouseup = up;
+    // var dragging = false;
+
+    function down (e) {
+      console.log('---->down')
+      dragging = true;
+      boxX = box.offsetLeft;
+      boxY = box.offsetTop;
+      mouseX = parseInt(getMouseXY(e).x);
+      mouseY = parseInt(getMouseXY(e).y);
+      offsetX = mouseX - boxX;
+      offsetY = mouseY - boxY;
+    }
+
+    function move (e) {
+      console.log('---->move:' + e)
+      if (dragging) {
+        var x = getMouseXY(e).x - offsetX;
+        var y = getMouseXY(e).y - offsetY;
+        var width = document.documentElement.clientWidth - box.offsetWidth;
+        var height = document.documentElement.clientHeight - box.offsetHeight;
+
+        x = Math.min(Math.max(0, x), width);
+        y = Math.min(Math.max(0, y), height);
+
+        box.style.left = x + 'px';
+        box.style.top = y + 'px';
+      }
+    }
+
+    function up () {
+      console.log('---->up')
+      dragging = false;
+    }
+
+    function getMouseXY(e) {
+      var x = 0, y = 0;
+      e = e || window.event;
+      if (e.pageX) {
+        x = e.pageX;
+        y = e.pageY;
+      } else {
+        x = e.clientX + document.body.scrollLeft - document.body.clientLeft;
+        y = e.clientY + document.body.scrollTop - document.body.clientTop;
+      }
+      return {
+        x: x,
+        y: y
+      };
+    }
+
+    var COUNT = 0;
+    function testFn() { console.log(COUNT++); }
+    function throttle (fn, delay, atleast) {
+      var times = null;
+      var previous = null;
+      return function () {
+        var args = arguments
+        var now = new Date();
+        if (!previous) {previous = now}
+        if ( now - previous > atleast ) {
+            fn.apply(null, args)
+            // 重置上一次开始时间为本次结束时间
+            previous = now;
+        } else {
+          clearTimeout(times)
+          times = setTimeout(function () {
+            fn.apply(null, args)
+          }, delay)
+        }
+      }
+    }
+    // window.onresize = throttle(testFn, 200, 1000);
+
+
+    // event loop 同步队列 异步队列(宏任务、微任务)
+    // setTimeout(function() {
+    //   console.log(1)
+    // }, 200)
+
+    // setTimeout(function() {
+    //   console.log(6)
+    // })
+
+    // new Promise(function(resolve, reject) {
+    //   console.log(2)
+    //   resolve()
+    //   console.log(3)
+    // }).then(() => {
+    //   console.log(4)
+    // })
+    // console.log(5)
+
+    // promise 实现
+    function PromiseB (fun) {
+      this.sussArg = undefined;
+      this.failArg = undefined;
+      this.succCbs = [];
+      this.failCbs = [];
+      this._status = this.STATUS.PENDING;
+
+      this._execFun(fun);
+    }
+
+    PromiseB.prototype.STATUS = {
+      PENDING: 1, //挂起状态
+      RESOLVE: 2, //完成状态
+      REJECT: 3 //拒绝状态
+    };
+
+    PromiseB.prototype._isFunction = function (f) {
+      return Object.prototype.toString.call(f) === '[object Function]'
+    }
+
+    PromiseB.prototype._exec = function(callback, arg) {
+      var newcallback;
+      if (this._isFunction(callback)) {
+        if (callback instanceof PromiseB) {
+          callback.resolve(arg);
+        } else {
+          newcallback = new PromiseB(callback);
+          newcallback.resolve(arg)
+        }
+      }
+    }
+
+    PromiseB.prototype._execFun = function(fun) {
+      var that = this;
+
+      if (this._isFunction(fun)) {
+        fun(function() {
+          that.sussArg = Array.prototype.slice.apply(arguments);
+          that._status = that.STATUS.RESOLVE;
+
+          that.resolve.apply(that, arguments);
+        },function() {
+          that.failArg = Array.prototype.slice.apply(arguments);
+          that._status = that.STATUS.REJECT
+
+          that.reject.apply(that, arguments);
+        })
+      }
+    }
+
+    PromiseB.prototype.resolve = function() {
+      var arg = arguments,
+          ret,
+          callback = this.succCbs.shift();
+      if (this._status === this.STATUS.RESOLVE && callback) {
+        ret = callback.apply(callback, arg);
+        if (!(ret instanceof PromiseB)) {
+          var _ret = ret;
+          ret = new PromiseB(function(resolve) {
+            setTimeout(function() {
+              resolve(_ret)
+            })
+          });
+          ret.succCbs = this.sussArg.slice();
+        }
+      }
+    }
+
+    PromiseB.prototype.reject = function() {
+      var arg = arguments,
+          ret,
+          callback = this.failCbs.shift();
+      if (this._status === this.STATUS.REJECT && callback) {
+        ret = callback.apply(callback, arg);
+        if (!(ret instanceof PromiseB)) {
+          var _ret = ret;
+          ret = new PromiseB(function(resole) {
+            setTimeout(function(){
+              resolve(_ret)
+            }, 200)
+          });
+          ret.failCbs = this.failArg.slice();
+        }
+      }
+    }
+
+    PromiseB.prototype.then = function(s, f) {
+      this.done(s);
+      this.fail(f);
+      return this;
+    }
+
+    PromiseB.prototype.done = function(fun) {
+      if (this._isFunction(fun)) {
+        if (this._status === this.STATUS.RESOLVE) {
+          fun.apply(fun, this.sussArg);
+        } else {
+          this.succCbs.push(fun);
+        }
+      }
+      return this;
+    }
+
+    PromiseB.prototype.fail = function(fun) {
+      if (this._isFunction(fun)) {
+        if (this._status === this.STATUS.REJECT) {
+          fun.apply(fun, this.failArg)
+        } else {
+          this.failCbs.push(fun);
+        }
+      }
+    }
+
+    PromiseB.prototype.always = function(fun) {
+      this.done(fun);
+      this.fail(fun);
+      return this
+    }
+
+    // var promiseB = new PromiseB(function(resolve) {
+    //   console.log('promiseB')
+    //   resolve('---->')
+    // }).then(function(val) {
+    //   console.log('aaaaaaaaa' + val)
+    //   console.log('promiseB--->then')
+    //   return '我的返回值'
+    // }).then(function(val) {
+    //   console.log(val)
+    // })
+    
+
+
+
+    function Promise(executor) {
+      var self = this
+
+      self.status = 'pending'
+      self.onResolvedCallback = []
+      self.onRejectedCallback = []
+
+      function resolve(value) {
+        if (value instanceof Promise) {
+          return value.then(resolve, reject)
+        }
+        setTimeout(function() { // 异步执行所有的回调函数
+          console.log('resolve--setTimeout')
+          if (self.status === 'pending') {
+            self.status = 'resolved'
+            self.data = value
+            for (var i = 0; i < self.onResolvedCallback.length; i++) {
+              self.onResolvedCallback[i](value)
+            }
+          }
+        })
+      }
+
+      function reject(reason) {
+        setTimeout(function() { // 异步执行所有的回调函数
+          if (self.status === 'pending') {
+            self.status = 'rejected'
+            self.data = reason
+            for (var i = 0; i < self.onRejectedCallback.length; i++) {
+              self.onRejectedCallback[i](reason)
+            }
+          }
+        })
+      }
+
+      try {
+        executor(resolve, reject)
+      } catch (reason) {
+        reject(reason)
+      }
+    }
+
+    function resolvePromise(promise2, x, resolve, reject) {
+      console.log('resolvePromise')
+      var then
+      var thenCalledOrThrow = false
+
+      if (promise2 === x) {
+        return reject(new TypeError('Chaining cycle detected for promise!'))
+      }
+
+      if (x instanceof Promise) {
+        if (x.status === 'pending') { //because x could resolved by a Promise Object
+          x.then(function(v) {
+            resolvePromise(promise2, v, resolve, reject)
+          }, reject)
+        } else { //but if it is resolved, it will never resolved by a Promise Object but a static value;
+          x.then(resolve, reject)
+        }
+        return
+      }
+
+      if ((x !== null) && ((typeof x === 'object') || (typeof x === 'function'))) {
+        try {
+          then = x.then //because x.then could be a getter
+          if (typeof then === 'function') {
+            then.call(x, function rs(y) {
+              if (thenCalledOrThrow) return
+              thenCalledOrThrow = true
+              return resolvePromise(promise2, y, resolve, reject)
+            }, function rj(r) {
+              if (thenCalledOrThrow) return
+              thenCalledOrThrow = true
+              return reject(r)
+            })
+          } else {
+            resolve(x)
+          }
+        } catch (e) {
+          if (thenCalledOrThrow) return
+          thenCalledOrThrow = true
+          return reject(e)
+        }
+      } else {
+        resolve(x)
+      }
+    }
+
+    Promise.prototype.then = function(onResolved, onRejected) {
+      console.log('then')
+      var self = this
+      var promise2
+      onResolved = typeof onResolved === 'function' ? onResolved : function(v) {
+        return v
+      }
+      onRejected = typeof onRejected === 'function' ? onRejected : function(r) {
+        throw r
+      }
+
+      if (self.status === 'resolved') {
+        return promise2 = new Promise(function(resolve, reject) {
+          setTimeout(function() { // 异步执行onResolved
+            console.log('then--setTimeout')
+            try {
+              var x = onResolved(self.data)
+              resolvePromise(promise2, x, resolve, reject)
+            } catch (reason) {
+              reject(reason)
+            }
+          })
+        })
+      }
+
+      if (self.status === 'rejected') {
+        return promise2 = new Promise(function(resolve, reject) {
+          setTimeout(function() { // 异步执行onRejected
+            try {
+              var x = onRejected(self.data)
+              resolvePromise(promise2, x, resolve, reject)
+            } catch (reason) {
+              reject(reason)
+            }
+          })
+        })
+      }
+
+      if (self.status === 'pending') {
+        // 这里之所以没有异步执行，是因为这些函数必然会被resolve或reject调用，而resolve或reject函数里的内容已是异步执行，构造函数里的定义
+        return promise2 = new Promise(function(resolve, reject) {
+          console.log('then----->onResolvedCallback')
+          self.onResolvedCallback.push(function(value) {
+            try {
+              var x = onResolved(value)
+              console.log('---->' + resolve)
+              resolvePromise(promise2, x, resolve, reject)
+            } catch (r) {
+              reject(r)
+            }
+          })
+
+          self.onRejectedCallback.push(function(reason) {
+            console.log('then----->onRejectedCallback')
+              try {
+                var x = onRejected(reason)
+                resolvePromise(promise2, x, resolve, reject)
+              } catch (r) {
+                reject(r)
+              }
+            })
+        })
+      }
+    }
+
+    Promise.prototype.catch = function(onRejected) {
+      return this.then(null, onRejected)
+    }
+
+    Promise.deferred = Promise.defer = function() {
+      var dfd = {}
+      dfd.promise = new Promise(function(resolve, reject) {
+        dfd.resolve = resolve
+        dfd.reject = reject
+      })
+      return dfd
+    }  
+
+    // var promise = new Promise(function(resolve) {
+    //   // console.log('promise')
+    //   resolve('---->')
+    // })
+    // .then(function(val) {
+    //   console.log('aaaaaaaaa' + val)
+    //   // console.log('promise--->then')
+    //   return '我的返回值'
+    // })
+    // // .then(function(val) {
+    // //   console.log(val)
+    // // })
+
+
+    function duplicateCount(text){
+      var obj = {}
+      var total = 0
+      for (var i = 0, len = text.length; i < len; i++) {
+        var count = 0
+        var value = text.charAt(i) 
+        if (text.indexOf(value) > -1) {
+          if (obj[value]) {
+            obj[value]++
+          } else {
+            obj[value] = ++count
+          }
+        }
+      }
+      for (item in obj) {
+        if (obj[item] >= 2) {
+          total = obj[item]
+          break
+        }
+      }
+      console.log(total)
+    return total
+  }
+  // console.log(duplicateCount('Indivisibilities'))
+
+  function findSmallestInt (args) {
+    var arr = args.sort(
+      function(a, b) {
+      return a - b > 0
+    })
+    console.log(args)
+    console.log(arr)
+    return arr[0]
+  }
+  console.log(findSmallestInt([3434, 1, 2323, 131, 9, 90, 8469940, 7186069, 12345, 1367920]))
+  console.log(findSmallestInt([233, 26116082,21400017,7186069, 12345, 1367920,4766387,6021030,1157210,11991350,6340631,11760932,13459030,8469940]))
+
+  // 洗牌算法
+  function shuffle(array) {
+    var _array = array.concat();
+
+    for (var i = _array.length; i--; ) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = _array[i];
+      _array[i] = _array[j];
+      _array[j] = temp;
+    }
+
+    return _array;
+  }
+  console.log(shuffle([1,2,3,4,5,6,7,8,9]))
+
+  function binary_array_to_number(arr) {
+    var sum = 0
+    for (var i = 0, len = arr.length; i < len; i++) {
+      console.log(Math.pow(2, i) * arr[arr.length - 1 - i])
+      sum += Math.pow(2, i) * arr[arr.length - 1 - i]
+    }
+    return sum
+  }
+  console.log('----->' + binary_array_to_number([1, 1, 0, 1, 1]))
+  
+ 
+  
+  var myObject = {
+    foo: "bar",
+    func: function() {
+        var self = this;
+        // console.log("outer func:  this.foo = " + this.foo);
+        // console.log("outer func:  self.foo = " + self.foo);
+        (function() {
+			// console.log(this)
+            // console.log("inner func:  this.foo = " + this.foo);
+            // console.log("inner func:  self.foo = " + self.foo);
+        }());
+    }
+};
+myObject.func()
+
+	function foo1()
+	{
+	  return {
+		  bar: "hello"
+	  };
+	}
+
+	function foo2()
+	{
+	  return
+	  {
+		  bar: "hello"
+	  };
+	}
+	
+	// console.log("foo1 returns:");
+	// console.log(foo1());
+	// console.log("foo2 returns:");
+	// console.log(foo2());
+	
+function fun(n,o) {
+  console.log(o)
+  return {
+	fun:function(m){
+	  return fun(m,n);
+    }
+   };
+}
+var a = fun(0);
+var b = a.fun(1);
+var c = b.fun(2);
+var d = c.fun(3); 
+
+console.log(a)
+console.log(b)
+console.log(c)
+console.log(d)
+
+// var a = fun(0); 
+// a.fun(1); 
+// a.fun(2); 
+// a.fun(3);		    //输出什么 undefined 0 0 0
+  </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const action = {
+      type: 'INCREMENT'
+    }
+    const executeIfFunction = f =>
+      f instanceof Function ? f() : f
+
+    const switchcase = cases => defaultCase => key =>
+      cases.hasOwnProperty(key) ? cases[key] : defaultCase
+
+    const switchcaseF = cases => defaultCase => key =>
+      executeIfFunction(switchcase(cases)(defaultCase)(key))
+
+    const counter = (state = 0, action) =>
+      switchcaseF({
+        'INCREMENT': () => state + 1,
+        'DECREMENT': () => state - 1
+      })(state)(action.type)
+    console.log(counter(0, action))
+
+    const getDay = switchcase({
+      0: 'Sunday',
+      1: 'Monday',
+      2: 'Tuesday',
+      3: 'Wednesday',
+      4: 'Thursday',
+      5: 'Friday',
+      6: 'Saturday'
+    })('Unknown')
+    const getCurrentDay = () => getDay(new Date().getDay())
+    const day = getCurrentDay()
+
+    console.log('------>' + day)
+  </script>
+</body>
+
+</html>

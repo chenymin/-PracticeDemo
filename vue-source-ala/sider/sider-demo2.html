@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    @keyframes slidy {
+      0% {
+        left: 0%;
+      }
+      20% {
+        left: 0%;
+      }
+      25% {
+        left: -100%;
+      }
+      45% {
+        left: -100%;
+      }
+      50% {
+        left: -200%;
+      }
+      70% {
+        left: -200%;
+      }
+      75% {
+        left: -300%;
+      }
+      95% {
+        left: -300%;
+      }
+      100% {
+        left: -400%;
+      }
+    }
+
+    body {
+      margin: 0;
+    }
+
+    div#slider {
+      overflow: hidden;
+    }
+
+    div#slider figure img {
+      width: 20%;
+      float: left;
+    }
+
+    div#slider figure {
+      position: relative;
+      width: 500%;
+      margin: 0;
+      left: 0;
+      text-align: left;
+      font-size: 0;
+      animation: 30s slidy infinite;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="slider">
+    <figure>
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/taj-mahal_copy.jpg" alt>
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/taj-mahal_copy.jpg" alt>
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/ibiza.jpg" alt>
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/ankor-wat.jpg" alt>
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/austin-fireworks.jpg" alt>
+    </figure>
+  </div>
+</body>
+
+</html>

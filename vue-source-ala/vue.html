@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .triangle-up {
+      width: 0;
+      height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: calc(100px * 0.866) solid gray; 
+    }
+  </style>
+</head>
+
+<body>
+  <div class="triangle-up"></div>
+  <script>
+    class Dep {
+      constructor() {
+        this.subs = [];
+      }
+
+      addSub(sub) {
+        this.subs.push(sub);
+      }
+
+      notify() {
+        this.subs.forEach((sub) => {
+          sub.update();
+        })
+      }
+    }
+
+    class Watcher {
+      constructor() {
+        Dep.target = this;
+      }
+
+      update() {
+        console.log("视图更新啦～");
+      }
+    }
+
+    function observer(value) {
+      if (!value || (typeof value !== 'object')) {
+        return;
+      }
+
+      Object.keys(value).forEach((key) => {
+        defineReactive(value, key, value[key]);
+      });
+    }
+
+    function defineReactive(obj, key, val) {
+      const dep = new Dep();
+
+      Object.defineProperty(obj, key, {
+        enumerable: true,
+        configurable: true,
+        get: function reactiveGetter() {
+          dep.addSub(Dep.target);
+          return val;
+        },
+        set: function reactiveSetter(newVal) {
+          if (newVal === val) return;
+          dep.notify();
+        }
+      });
+    }
+
+    class Vue {
+      constructor(options) {
+        this._data = options.data;
+        observer(this._data);
+        new Watcher();
+        console.log('render~', this._data.test);
+      }
+    }
+
+    let o = new Vue({
+      data: {
+        test: "I am test."
+      }
+    });
+    o._data.test = "hello,test.";
+
+    Dep.target = null;
+  </script>
+</body>
+
+</html>

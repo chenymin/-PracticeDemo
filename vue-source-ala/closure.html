@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function fun(n, o) {
+      console.log(o)
+      return {
+        fun: function (m) {
+          console.log('---->' + m)
+          return fun(m, n);
+        }
+      };
+    }
+    // var a = fun(0);
+    // a.fun(1);
+    // a.fun(2);
+    // a.fun(3); //undefined,?,?,?
+
+    // var b = fun(0).fun(1).fun(2).fun(3); //undefined,?,?,?
+    
+    // 相当于
+    // var a = fun(0)
+    // var b = a.fun(1)
+    // var c = b.fun(2)
+    // var d = c.fun(3);
+    // 当 fun(0)执行完后返回{fun：function(m) {return fun(m, 0)}}对象，输出：undefined
+    // 当a.fun(1)执行完后返回{fun：function(m) {return fun(1, 0)}}对象，输出：0
+    // 当b.fun(2)执行完后返回{fun：function(m) {return fun(2, 1)}}对象，输出：1
+    // 当c.fun(3)执行完后返回{fun：function(m) {return fun(3, 2)}}对象，输出：2
+
+    var c = fun(0).fun(1);
+    c.fun(2);
+    c.fun(3); //undefined,?,?,?
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // const originalObject = {firstName: 'arfat', lastName: 'Salman'}
+    // const handle = {
+    //   get(target, property, receiver) {
+    //     console.log(`GET property:${property}`)
+    //     if (property in target) {
+    //       return target[property];
+    //     }
+    //     return 'Oops! This property does not exist.';
+    //   }
+    // }
+    // const proxiedObject = new Proxy(originalObject, handle)
+    // console.log(proxiedObject.firstName1)
+
+
+  // 监听属性变化
+  //   const onChange = (objToWatch, onChangeFunction) => {
+  //   const handler = {
+  //     get(target, property, receiver) {
+  //       onChangeFunction();
+  //       const value = Reflect.get(target, property, receiver);
+  //       if (typeof value === 'object') {
+  //         return new Proxy(value, handler);
+  //       }
+  //       return value;
+  //     },
+  //     set(target, property, value) {
+  //       onChangeFunction();
+  //       return Reflect.set(target, property, value);
+  //     },
+  //     deleteProperty(target, property) {
+  //       onChangeFunction();
+  //       return Reflect.deleteProperty(target, property);
+  //     }
+  //   };
+  //   return new Proxy(objToWatch, handler);
+  // };
+
+  // const logger = () => console.log('I was called');
+  // const obj = { a: 'a', c: ['1', '2', '3']};
+  // const proxy = onChange(obj, logger);
+  // proxy.c[0] = 5
+
+  // 拦截方法 将校验代码及业务代码分离
+  function creatProxyFun (callFun) {
+    const handle = {
+      apply: function(target, thisBinding, args) {
+        if (args[0] === 1) {
+          callFun.apply(callFun, args)
+        }
+        return args[0];
+      },
+    }
+    return new Proxy(callFun, handle)
+  }
+
+  function valid(value) {
+    return 1
+  }
+
+  function callBack(val) {
+    console.log('我被回调了------>' + val)
+  }
+
+  const proxyFun = creatProxyFun (callBack)
+  proxyFun(1)
+  </script>
+</body>
+</html>
