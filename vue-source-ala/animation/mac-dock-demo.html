@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="author" content="oxxo.studio">
+<meta name="copyright" content="oxxo.studio">
+<title>MAC DOCK</title>
+<style>
+  #mouse_area {
+    position: absolute;
+    z-index: 99;
+  }
+  ul,li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  #mac_button {
+    margin: 0 auto;
+    display:table;
+  }
+  #mac_button li {
+    display: inline-block;
+    position: relative;
+    padding: 0 2px;
+  }
+  #mac_button li img {
+    width: 100%;
+    height: 100%;
+  }
+  #mac_button li::before {
+    content: attr(text);  /*讀取text*/
+    position: absolute;
+    height: 20px;
+    top: -25px;
+    opacity: 0;
+    text-align: center;
+    font-weight: bold;
+    font-family: "arial";
+    font-size:12px;
+    -webkit-transform: scale(.6);
+    -moz-transform: scale(.6);
+    transform: scale(.6);
+    -webkit-transition: .2s;
+    -moz-transition: .2s;
+    transition: .2s;
+  }
+  #mac_button li:hover::before {
+    left: 0;
+    opacity: 1;
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    transform: scale(1);
+  }
+</style>
+<style id="before-class"></style>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script>
+  $(function() {
+    var limin = 30,  //icon縮小時候的寬度
+    		limax = 64,  //icon放大時候的寬度
+    		areax = 50, //整組 icon 的位置
+    		areay = 100,
+    		diff = limax - limin;
+    var $icon =  $('#mac_button li');
+
+    $('#before-class').html(
+    		'#mac_button li::before{width:'+(limax+4)+'px;left:'+((limin-(limax+4)*0.6)/2)+'px}'
+    	);  //修改::before樣式，利用 ::before 來產生說明文字
+
+    $icon.css({
+      'width': limin + 'px',  
+      'height': limin + 'px'
+    });  //定義每個icon的大小
+
+    $('#mouse_area').css({
+      'width': $icon.length * limin + 4 * limax + 'px',  
+      'top': areay + 'px',
+      'left': areax + 'px'
+    });  //定義左右滑鼠區域，目的為了讓 icon 群置中
+
+    var a = 0;  //判斷滑鼠是否還在icon群裏頭的簡單參數
+
+    $icon.hover(function(e) {
+      $(this).addClass('lihover');        //讓滑鼠 hover 與其左右 li 都有 class
+      $(this).next().addClass('linext');
+      $(this).prev().addClass('liprev');
+      $icon.not('.lihover,.linext,.liprev').css({
+        'width': limin + 'px',
+        'height': limin + 'px',
+        'margin-top': '0'
+      });  //讓沒有 class 的 icon 恢復最小長寬
+
+      if (a == 0) {
+        var licenterx = $('.lihover').offset().left + $('.lihover').width() * 0.5,  //hover icon 的中心位置
+        		mousex = e.pageX,
+        		x = mousex - licenterx,
+        		x1 = x / (1 - (diff / limax)),
+        		nextwidth = limin + diff / limax * (0.5 * limax + x1),  //左右 icon 的大小隨滑鼠位置不同而改變
+        		prevwidth = limin + diff / limax * (0.5 * limax - x1),
+        		mtNext = -0.5 * diff - diff / limax * x1,  //為了置底，margin-top 也必須改變
+        		mtPrev = -0.5 * diff + diff / limax * x1;
+
+        $('.linext').stop().animate({
+          'width': nextwidth + 'px',
+          'height': nextwidth + 'px',
+          'margin-top': mtNext + 'px'
+        }, 100);
+        $('.liprev').stop().animate({
+          'width': prevwidth + 'px',
+          'height': prevwidth + 'px',
+          'margin-top': mtPrev + 'px'
+        }, 100);
+        $('.lihover').stop().animate({
+          'width': limax + 'px',
+          'height': limax + 'px',
+          'margin-top': -diff + 'px'
+        }, 100, function(){
+	        $('.lihover').on('mousemove', _mouseMove);  //動畫完成後再 callback，避免突然放大
+        	a = 1;
+        });
+      } else {
+        $('.lihover').on('mousemove', _mouseMove); //如果已經是 hover，就直接執行
+      }
+
+    }, function() {
+      $icon.removeClass('lihover linext liprev').off('mousemove');
+    });
+
+    $('#mac_button').on('mouseleave', function() {
+      a = 0;
+      $('li').stop().animate({
+        'width': limin + 'px',
+        'height': limin + 'px',
+        'margin-top': '0'
+      }, 200);
+    });
+
+    function _mouseMove(e) {
+      var licenterx2 = $('.lihover').offset().left + $('.lihover').width() * 0.5,
+      		mousex2 = e.pageX,
+      		x2 = mousex2 - licenterx2,
+      		nextwidth2 = limin + diff / limax * (0.5 * limax + x2),
+      		prevwidth2 = limin + diff / limax * (0.5 * limax - x2),
+      		mtNext2 = -0.5 * diff - diff / limax * x2,
+      		mtPrev2 = -0.5 * diff + diff / limax * x2;
+
+      $('.lihover').css({
+        'width': limax + 'px',
+        'height': limax + 'px',
+        'margin-top': -diff + 'px'
+      });
+      $('.linext').css({
+        'width': nextwidth2 + 'px',
+        'height': nextwidth2 + 'px',
+        'margin-top': mtNext2 + 'px'
+      });
+      $('.liprev').css({
+        'width': prevwidth2 + 'px',
+        'height': prevwidth2 + 'px',
+        'margin-top': mtPrev2 + 'px'
+      });
+
+      $icon.not('.lihover,.linext,.liprev').css({
+        'width': limin + 'px',
+        'height': limin + 'px',
+        'margin-top': '0'
+      });
+    }
+
+  });
+</script>
+</head>
+
+<body>
+  <div id='mouse_area'>
+    <ul id='mac_button'>
+      <li text='blogger'><img src='../imgs/01.png' />
+      </li>
+      <li text='DVD'><img src='../imgs/02.png' />
+      </li>
+      <li text='Firefox'><img src='../imgs/03.png' />
+      </li>
+      <li text='Chrome'><img src='../imgs/04.png' />
+      </li>
+      <li text='Information'><img src='../imgs/05.png' />
+      </li>
+      <li text='IE'><img src='../imgs/06.png' />
+      </li>
+      <li text='Youtube'><img src='../imgs/07.png' />
+      </li>
+      <li text='Media'><img src='../imgs/08.png' />
+      </li>
+      <li text='Printer'><img src='../imgs/09.png' />
+      </li>
+      <li text='Skype'><img src='../imgs/10.png' />
+      </li>
+      <li text='Note'><img src='../imgs/11.png' />
+      </li>
+      <li text='Tools'><img src='../imgs/12.png' />
+      </li>
+      <li text='Yahoo'><img src='../imgs/13.png' />
+      </li>
+    </ul>
+  </div>
+  <script>
+  var href = location.href;
+  var page = href.split("demo/");
+  var name = page[1].split("-demo")[0];
+  var title = document.querySelector('title').innerHTML;
+  document.getElementById('infoLink').setAttribute('href', '/articles/' + name + '.html');
+  document.getElementById('infoLink').innerHTML = title.split("demo")[0];
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .camera {
+      width: 200px;
+      height: 200px;
+      perspective-origin: center center;
+      -moz-perspective-origin: center center;
+      -webkit-perspective-origin: center center;
+      perspective: 500px;
+      -moz-perspective: 500px;
+      -webkit-perspective: 500px;
+    }
+
+    .space {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      -webkit-transform-origin: center center 29px;
+      -webkit-animation: s 4s linear infinite;
+    }
+
+    @-webkit-keyframes s {
+      0% {
+        -webkit-transform: rotateY(0);
+      }
+      100% {
+        -webkit-transform: rotateY(-359.9deg);
+      }
+    }
+
+    @-webkit-keyframes s {
+      0% {
+        -webkit-transform: rotateY(0);
+      }
+      100% {
+        -webkit-transform: rotateY(-359.9deg);
+      }
+    }
+
+    .space div {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-width: 0 50px 87px;
+      border-style: solid;
+      opacity: .4;
+    }
+
+    .box1 {
+      border-color: transparent transparent #f00;
+      transform-origin: center bottom;
+      transform: translateX(50px) translateY(50px) rotateX(-90deg);
+    }
+
+    .box2 {
+      border-color: transparent transparent #00f;
+      transform-origin: center bottom;
+      transform: translateX(50px) translateY(50px) rotateX(-19.5deg);
+    }
+
+    .box3 {
+      border-color: transparent transparent #00f;
+      transform-origin: right bottom;
+      transform: translateX(50px) translateY(50px) rotateY(60deg) rotateX(19.5deg);
+    }
+
+    .box4 {
+      border-color: transparent transparent #f0f;
+      transform-origin: left bottom;
+      transform: translateX(50px) translateY(50px) rotateY(-60deg) rotateX(19.5deg);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="camera">
+    <div class="space">
+      <div class="box1"></div>
+      <div class="box2"></div>
+      <div class="box3"></div>
+      <div class="box4"></div>
+    </div>
+  </div>
+</body>
+
+</html>

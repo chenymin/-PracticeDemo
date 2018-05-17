@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .camera {
+      width: 200px;
+      height: 200px;
+      perspective-origin: center center;
+      -moz-perspective-origin: center center;
+      -webkit-perspective-origin: center center;
+      perspective: 500px;
+      -moz-perspective: 500px;
+      -webkit-perspective: 500px;
+    }
+
+    /* .space {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border: 1px dashed #000;
+      transform-style: preserve-3d;
+      -moz-transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+    } */
+
+    .space {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      -webkit-transform-origin: center center 29px;
+      -webkit-animation: s 4s linear infinite;
+    }
+
+    @-webkit-keyframes s {
+      0% {
+        -webkit-transform: rotateY(0);
+      }
+      100% {
+        -webkit-transform: rotateY(-359.9deg);
+      }
+    }
+
+    @-webkit-keyframes s {
+      0% {
+        -webkit-transform: rotateY(0);
+      }
+      100% {
+        -webkit-transform: rotateY(-359.9deg);
+      }
+    }
+
+    .space div {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      font-size: 50px;
+      text-align: center;
+      line-height: 100px;
+    }
+
+    .box1 {
+      background: rgba(255, 0, 0, .2);
+      transform: translateX(50px) translateY(50px);
+    }
+
+    .box2 {
+      background: rgba(255, 255, 0, .2);
+      transform-origin: left top;
+      transform: translateX(150px) translateY(50px) rotateY(90deg);
+    }
+
+    .box3 {
+      background: rgba(0, 255, 0, .2);
+      transform: translateX(50px) translateY(50px) translateZ(-100px) rotateY(180deg);
+    }
+
+    .box4 {
+      background: rgba(255, 0, 255, .2);
+      transform-origin: right top;
+      transform: translateX(-50px) translateY(50px) rotateY(-90deg);
+    }
+
+    .box5 {
+      background: rgba(0, 0, 255, .2);
+      transform-origin: center bottom;
+      transform: translateX(50px) translateY(-50px) rotateX(90deg);
+    }
+
+    .box6 {
+      background: rgba(0, 255, 255, .2);
+      transform-origin: center top;
+      transform: translateX(50px) translateY(150px) rotateX(-90deg);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="camera">
+    <div class="space">
+      <div class="box1">1</div>
+      <div class="box2">2</div>
+      <div class="box3">3</div>
+      <div class="box4">4</div>
+      <div class="box5">5</div>
+      <div class="box6">6</div>
+    </div>
+  </div>
+</body>
+
+</html>
