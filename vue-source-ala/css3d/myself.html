@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .stage {
+      perspective: 500;
+    }
+    .container {
+      position: relative;
+      transform-style: preserve-3d;
+    }
+    .container-item {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      line-height: 100px;
+      font-size: 40px;
+      text-align: center;
+    }
+
+    .container-front {
+      background: hsla(  0, 100%, 50%, 0.7);
+    }
+
+    .container-back {
+      background: hsla(120, 100%, 50%, 0.7);
+    
+    }
+
+    .container-left {
+      background: hsla(180, 100%, 50%, 0.7);
+      
+    }
+
+    .container-right {
+      background: hsla( 60, 100%, 50%, 0.7);
+    }
+
+    .container-top {
+      background: hsla(240, 100%, 50%, 0.7);
+    }
+
+    .container-bottom {
+      background: hsla(300, 100%, 50%, 0.7); 
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="container">
+      <div class="container-item container-front">1</div>
+      <div class="container-item container-back">2</div>
+      <div class="container-item container-left">3</div>
+      <div class="container-item container-right">4</div>
+      <div class="container-item container-top">5</div>
+      <div class="container-item container-bottom">6</div>
+    </div>
+  </div>
+</body>
+</html>
