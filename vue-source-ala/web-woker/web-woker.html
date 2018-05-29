@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <button onclick="startComputation()" id="button">Start computation</button>
+  <script>
+    var worker = new Worker('doWork.js');
+    worker.addEventListener('message', function (e) {
+      document.getElementById('button').innerHTML=e.data
+      console.log(e.data);
+    }, false);
+
+    function startComputation() {
+      worker.postMessage({
+        'cmd': 'average',
+        'data': [1, 2, 3, 4]
+      });
+    }
+  </script>
+</body>
+
+</html>

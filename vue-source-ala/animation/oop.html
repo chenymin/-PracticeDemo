@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function Person(name) { //构造函数
+      this.name = name;
+    }
+
+    Person.prototype.printName = function () //原型对象
+    {
+      alert(this.name);
+    }
+
+    var person1 = new Person('Byron'); //实例化对象
+    console.log(person1); //Person
+    // console.log(person1.constructor); //自己试试看会是什么吧
+    // console.log(Person.prototype); //指向原型对象Person
+    // var person2 = new Person('Frank');
+
+    function Animal() {
+      this.species = "动物";　　
+    }
+
+    function Cat(name, color) {
+      // this 指向Cat
+      Animal.apply(this, arguments);　　　
+      this.name = name;　　　
+      this.color = color;　　
+    }
+    // 将Cat的prototype对象指向一个Animal的实例,相当于完全删除了prototype 对象原先的值，然后赋予一个新值
+    Cat.prototype = new Animal();
+    // 任何一个prototype对象都有一个constructor属性，指向它的构造函数。
+    // 如果没有"Cat.prototype = new Animal();"这一行，Cat.prototype.constructor是指向Cat的；
+    // 加了这一行以后，Cat.prototype.constructor指向Animal。　
+    // 显然会导致继承链的紊乱（cat1明明是用构造函数Cat生成的），
+    // 因此我们必须手动纠正，将Cat.prototype对象的constructor值改为Cat。
+    Cat.prototype.constructor = Cat;
+    var cat1 = new Cat("大毛", "黄色");
+    // console.log(cat1.species)
+    console.log(cat1)
+
+    // 利用空对象中介
+    function extend(Child, Parent) {　
+      var F = function () {};　
+      F.prototype = Parent.prototype;
+      Child.prototype = new F();
+      Child.prototype.constructor = Child;
+      // 为子对象设一个uber属性，这个属性直接指向父对象的prototype属性。（uber是一个德语词，意思是"向上"、"上一层"。）
+      // 这等于在子对象上打开一条通道，可以直接调用父对象的方法。这一行放在这里，只是为了实现继承的完备性，纯属备用性质。
+      Child.uber = Parent.prototype;
+    }
+    extend(Cat, Animal);　　
+    var cat1 = new Cat("大毛", "黄色");
+    console.log(cat1.species); // 动物
+  </script>
+</body>
+
+</html>
