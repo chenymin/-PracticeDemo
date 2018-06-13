@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 栈
+    function Stack() {
+      const list = []
+
+      function push(value) {
+        list.push(value)
+      }
+
+      function pop() {
+        return list.pop()
+      }
+
+      return Object.freeze({
+        push,
+        pop
+      })
+    }
+    let stack = Stack();
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+    // console.log(stack.pop()); //3
+    // console.log(stack.pop()); //2
+    // 队列
+    function Queue() {
+      const list = []
+      // 入列
+      function enqueue(val) {
+        list.push(val)
+      }
+      // 出列 
+      function dequeue(val) {
+        return list.shift(val)
+      }
+
+      return Object.freeze({
+        enqueue,
+        dequeue
+      })
+    }
+
+    let queue = Queue();
+    queue.enqueue(1);
+    queue.enqueue(2);
+    queue.enqueue(3);
+    // console.log(queue.dequeue()); //1
+    // console.log(queue.dequeue()); //2
+
+    // 事件触发
+    function EventEmitter() {
+      let subscribers = [];
+
+      function subscribe(type, callback) {
+        subscribers[type] = subscribers[type] || [];
+        subscribers[type].push(callback);
+      }
+
+      function notify(value, fn) {
+        try {
+          fn(value)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      function publish(type, value) {
+        if (subscribers[type]) {
+          let notifySubscriber = notify.bind(null, value);
+          subscribers[type].forEach(notifySubscriber);
+        }
+      }
+
+      return Object.freeze({
+        subscribe,
+        publish
+      });
+    }
+    let eventEmitter = EventEmitter();
+    eventEmitter.subscribe("update", doSomething);
+    eventEmitter.subscribe("update", doSomethingElse);
+    eventEmitter.subscribe("add", doSomethingOnAdd);
+    eventEmitter.publish("update", {
+      key: 122
+    });
+
+    function doSomething(value) {
+      console.log('doSomething' + value.key)
+    }
+
+    function doSomethingElse(value) {
+      console.log('doSomethingElse' + value.key)
+    }
+
+    function doSomethingOnAdd(value) {
+      console.log('doSomethingOnAdd')
+    }
+    // Timer
+    function Timer(fn, interval) {
+      let timerId;
+
+      function startRecursiveTimer() {
+        timerId = setTimeout(fn, interval);
+      }
+
+      function stop() {
+        if (timerId) {
+          clearTimeout(timerId);
+          timerId = 0;
+        }
+      }
+
+      function start() {
+        if (!timerId) {
+          startRecursiveTimer();
+        }
+      }
+      return Object.freeze({
+        start,
+        stop
+      });
+    }
+
+  //  let timer = Timer(getTodos, 2000);
+   // timer.start();
+    // function getTodos () {
+    //   while (true) {
+    //     console.log('getTodos')
+    //   }
+    // }
+
+    // timer.start(close, 5000)
+    // function close () {
+    //   timer.stop()
+    // }
+  </script>
+</body>
+
+</html>
