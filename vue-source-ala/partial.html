@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const partial = (fn, ...initialArguments) => {
+      // Then we return a function which will take the rest
+      // and call the partially applied function.
+      return (...remainingArguments) => {
+        fn(...initialArguments, ...remainingArguments);
+      }
+    }
+
+    const makePostRequest = (url, headers, data) => {
+      debugger
+      console.log(url)
+      console.log(headers)
+      console.log(data)
+    }
+
+    const saveComment = partial(
+      makePostRequest,
+      'https://example.com/post', {
+        'Content-Type': 'application/json'
+      }
+    )
+
+    saveComment('I like this article!')
+  </script>
+</body>
+
+</html>

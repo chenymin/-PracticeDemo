@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function readonly(target, property, descriptor) {
+      descriptor.writable = false;
+      return descriptor;
+    }
+    class User {
+      constructor(firstname, lastName) {
+        this.firstname = firstname;
+        this.lastName = lastName;
+      }
+      @log('calling getFullName method on User class')
+      getFullName() {
+        return this.firstname + ' ' + this.lastName;
+      }
+    }
+    // User.prototype.getFullName = function () {
+    //   return 'HACKED!';
+    // }
+
+    function log(logMessage) {
+      // return decorator function
+      return function (target, property, descriptor) {
+        // save original value, which is method (function)
+        let originalMethod = descriptor.value;
+        // replace method implementation
+        descriptor.value = function (...args) {
+          console.log('[LOG]', logMessage);
+          // here, call original method
+          // `this` points to the instance
+          return originalMethod.call(this, ...args);
+        };
+        return descriptor;
+      }
+    }
+
+    var user = new User( 'John', 'Doe' );
+    console.log( user.getFullName() );
+  </script>
+</body>
+
+</html>
