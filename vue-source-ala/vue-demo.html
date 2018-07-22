@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // let price = 5
+        // let quantity = 2
+        // let total = 0
+        // let target = null
+        // let storage = []
+
+        // function record () {
+        //     storage.push(target)
+        // }
+
+        // function replay () {
+        //     storage.forEach(run => run())
+        // }
+
+        // target = () => { total = quantity * price}
+        // record()
+        // target()
+        // price = 20
+        // console.log(total)
+
+        // replay()
+        // console.log(total)
+
+        let data = {price: 5, quantity: 2}    
+        let target = null
+        class Dep {
+            constructor () {
+                this.subscribers = []
+            }
+
+            depend () {
+                debugger
+                if (target && !this.subscribers.includes(target)) {
+                    this.subscribers.push(target)
+                }
+            }
+
+            notify () {
+                this.subscribers.forEach(sub => sub())
+            }
+        }
+
+        Object.keys(data).forEach(key => {
+            let internalValue = data[key]
+
+            const dep = new Dep()
+
+            Object.defineProperty(data, key, {
+                get () {
+                    dep.depend()
+                    return internalValue
+                },
+                set (newVal) {
+                    internalValue = newVal
+                    dep.notify()
+                }
+            })
+        })
+
+        function watcher (myFunc) {
+            target = myFunc
+            target()
+            target = null
+        }
+
+        watcher(() => {
+            data.total = data.price * data.quantity
+        })
+    </script>
+</body>
+</html>
