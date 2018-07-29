@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // setTimeout(function () {
+        //     console.log('--->1')
+        // }, 2000)
+
+        // setTimeout(function () {
+        //     console.log('--->2')
+        // }, 1000)
+
+        // setTimeout(function () {
+        //     console.log('--->3')
+        // }, 2000)
+
+        const timeout = ms => new Promise(resolve => {
+            setTimeout(() => {
+                resolve()
+            }, ms)
+        })
+
+        const ajax1 = () => timeout(2000).then(() => {
+            console.log('--->1')
+            return 1
+        })
+
+        const ajax2 = () => timeout(1000).then(() => {
+            console.log('--->2')
+            return 2
+        })
+
+        const ajax3 = () => timeout(2000).then(() => {
+            console.log('--->3')
+            return 3
+        })
+        // 比较粗暴的写法 比较蠢
+        // const mergePromise = (ajaxArray) => {
+        //     // toDo
+        //     return new Promise((resolve) => {
+        //         var arr = []
+        //         const arr1 = ajaxArray[0]().then((val) => {
+        //             const arr2 = ajaxArray[1]()
+        //             const arr3 = ajaxArray[2]()
+        //             arr.push(arr2)
+        //             arr.push(arr3)
+        //             return val
+        //         }).then((val) => {
+        //             arr.unshift(val)
+        //             Promise.all(arr).then((data) => {
+        //                 resolve(data)
+        //             })
+        //         })
+        //     })
+        // }
+
+        // 使用reduce方法实现 此种方法是错误的，
+        // 表面上看第一次执行ajax2()执行生成一个setTimeOut在回掉栈里需要等tempPreAjax()微任务、ajaxArray.reduce()函数执行完毕后才会拉取执行
+        // 输出的结果是 1 3 2 done [1, 2, 3]
+
+        // const mergePromise = (ajaxArray) => {
+        //     var promiseArr = []
+        //     return new Promise ((resolve) => {
+        //         ajaxArray.reduce((preAjax, ajax, index, arr) => {
+        //             const tempPreAjax = preAjax || ajax
+        //             tempPreAjax().then((val)=> {
+        //                 promiseArr.push(val)
+        //                 preAjax && promiseArr.push(ajax())
+        //                 index === arr.length - 1 && Promise.all(promiseArr).then((data) => {
+        //                     resolve(data)
+        //                 })
+        //             })
+        //         })
+        //     })
+        // }
+
+        // 主要是if (typeof preAjax === 'function') preAjax = preAjax()这句
+        const mergePromise = (ajaxArray) => { 
+            return ajaxArray.reduce((preAjax, ajax) => {
+                return new Promise(resolve => {
+                    debugger
+                    if (typeof preAjax === 'function') preAjax = preAjax()
+                    preAjax.then(predata => {
+                        ajax().then(data => {
+                            resolve([].concat(predata).concat(data))
+                        })
+                    })
+                })
+            })
+        }
+
+        // 老袁写的
+         const mergePromise = (ajaxArray) => {
+            //1,2,3 done [1,2,3]
+            var arr = [],
+                ajaxLength = ajaxArray.length;
+            for (var i = 0; i < ajaxLength; i++) {
+                ajaxArray[i].next = ajaxArray[i + 1];
+            }
+
+            function todo(item) {
+                item().then(data => {
+                    arr.push(data);
+                    var _next = item.next;
+                    _next && todo(_next);
+                });
+            }
+            todo.then = (data) => {
+                ajaxArray[ajaxLength - 1].next = () =>
+                    timeout(0).then(() => {
+                        data(arr)
+                    });
+                todo(ajaxArray[0]);
+            }
+            return todo;
+        }
+
+        mergePromise([ajax1, ajax2, ajax3]).then((data) => {
+            console.log("done")
+            console.log(data); // data为[1,2,3]
+        })
+    </script>
+</body>
+</html>
