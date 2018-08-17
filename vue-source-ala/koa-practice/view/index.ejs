@@ -4,7 +4,13 @@
     <title><%= title %></title>
 </head>
 <body>
-    <h1><%= title %></h1>
-    <p>EJS Welcome to <%= title %></p>
+    <button class="btn" id="J_UploadPictureBtn">上传图片</button>
+    <hr/>
+    <p>上传进度<span id="J_UploadProgress">0</span>%</p>
+    <p>上传结果图片</p>
+    <div id="J_PicturePreview" class="preview-picture">
+        <span><%= src %></span>
+    </div>
+    <script src="/js/index.js"></script>
 </body>
 </html>

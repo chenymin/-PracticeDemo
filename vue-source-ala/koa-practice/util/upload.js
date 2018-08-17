@@ -65,6 +65,9 @@ function uploadFile( ctx, options) {
       file.on('end', function() {
         result.success = true
         result.message = '文件上传成功'
+        result.data = {
+          pictureUrl: `//${ctx.host}/image/${fileType}/${fileName}`
+        }
         console.log('文件上传成功！')
       })
     })
