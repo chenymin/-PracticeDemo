@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    const PENDING = 'PENDING'
+    const FULFILLED = 'FULFILLED'
+    const REJECTED = 'REJECTED'
+
+    const isPromise = object => object && object.then && typeof object.then === 'function'
+    const noop = () => {}
+
+    const statusProvider = (promise, status) => data => {
+      if (promise.status !== PENDING) {return false}
+      promise.status = status
+      promise.result = data
+      switch (status) {
+        case FULFILLED: return promise.successListener.forEach(fn => fn(data))
+		    case REJECTED: return promise.failurelistener.forEach(fn => fn(data))
+      }
+    }
+
+    class Promise {
+      constructor(executor) {
+        this.status = PENDING
+        this.successListener = []
+        this.failurelistener = []
+        this.result = undefined
+        executor(statusProvider(this, FULFILLED), statusProvider(this, REJECTED))
+      }
+
+      then(...args) {
+        const child= new this.constructor(noop)
+
+        const handler = fn => data => {
+          if (typeof fn === 'function') {
+            const result = fn(data)
+            if (isPromise(result)) {
+              Object.assign(child, result)
+            } else {
+              statusProvider(child, FULFILLED)(result)
+            }
+          } else if (!fn) {
+            statusProvider(child, this.status)(data)
+          }
+        }
+
+        switch (this.status) {
+          case PENDING: {
+            this.successListener.push(handler(args[0]))
+				    this.failurelistener.push(handler(args[1]))
+            break
+          }
+          case FULFILLED: {
+            handler(args[0])(this.result)
+            break
+          }
+          case REJECTED: {
+            handler(args[1])(this.result)
+            break
+          }
+        }
+        return child
+      }
+
+      catch(arg) {
+        return this.then(undefined, arg)
+      }
+    }
+
+    const promise = new Promise((resolve, reject) => {setTimeout(() => resolve(5), 2000)})// 5
+    promise.then((result) => {
+      console.log(result)
+      return 1
+    }).then((test) => {
+      console.log(test)
+    })
+    </script>
+</body>
+</html>
