@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
 </head>
@@ -16,6 +16,7 @@
     const noop = () => {}
 
     const statusProvider = (promise, status) => data => {
+      console.log('statusProvider')
       if (promise.status !== PENDING) {return false}
       promise.status = status
       promise.result = data
@@ -35,6 +36,7 @@
       }
 
       then(...args) {
+        console.log('then')
         const child= new this.constructor(noop)
 
         const handler = fn => data => {
@@ -57,10 +59,12 @@
             break
           }
           case FULFILLED: {
+            console.log('---->FULFILLED')
             handler(args[0])(this.result)
             break
           }
           case REJECTED: {
+            console.log('---->REJECTED')
             handler(args[1])(this.result)
             break
           }
