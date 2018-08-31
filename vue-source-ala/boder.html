@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .box1 {
+      width: 200px;
+      background: repeating-linear-gradient(135deg, transparent, transparent 3px, #000 3px, #000 8px);
+      animation: shine 1s infinite linear;
+      overflow: hidden;
+    }
+
+    .content1 {
+      height: 128px;
+      margin: 1px; padding: 10px;
+      background-color: #fff;    
+    }
+
+    @keyframes shine {
+      0% { background-position: -1px -1px;}
+      100% { background-position: -12px -12px;}
+    }
+
+  .box2 {
+    display: inline-block;
+    padding: 10px;
+    position: relative;
+  }
+  .box2::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; right: 0; bottom: 0;
+      border: 2px solid #cd0000;
+      /* clip: rect(0 2px 116px 0);
+      clip: rect(114px 148px 116px 0); */
+      animation: borderAround 1.5s infinite linear;    
+  }
+  @keyframes borderAround {
+      0%, 100% { clip: rect(0 148px 2px 0); }
+      25% { clip: rect(0 148px 116px 146px); }
+      50% { clip: rect(114px 148px 122px 0); }
+      75% { clip: rect(0 2px 116px 0); }
+  } 
+
+  
+.box2 {
+	display: inline-block;
+	padding: 10px;
+	position: relative;
+}
+.box2::before {
+	content: '';
+	position: absolute;
+	left: 0; top: 0; right: 0; bottom: 0;
+	border: 2px solid #cd0000;
+	animation: borderAround 1.5s infinite linear;	
+}
+.box2 img {
+	display: block;
+}
+@keyframes borderAround {
+	0%, 100% { clip: rect(0 148px 2px 0); }
+	25% { clip: rect(0 148px 116px 146px); }
+	50% { clip: rect(114px 148px 116px 0); }
+	75% { clip: rect(0 2px 116px 0); }
+}
+
+.box2::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; right: 0; bottom: 0;
+    border: 2px solid #cd0000;
+    animation: borderAround2 1.5s infinite linear;
+    visibility: hidden;
+}
+@keyframes borderAround2 {
+    50% { clip: rect(0 148px 2px 0); }
+    75% { clip: rect(0 148px 116px 146px); }
+    0%,100% { clip: rect(114px 148px 116px 0); }
+    25% { clip: rect(0 2px 116px 0); }
+}
+.both:after {
+    visibility: visible;
+}
+
+     
+  </style>
+</head>
+<body>
+  <div class="box1">
+    <div class="content1">
+      内容占位
+    </div>
+  </div>
+
+
+  <div class="box2">
+      <img src="https://image.zhangxinxu.com/image/study/s/s256/mm1.jpg" width="128" height="96">
+  </div>
+  <script>
+    document.querySelector('.box2').addEventListener('click', function () {
+      this.classList.add('both');
+    });
+  </script>
+</body>
+</html>
