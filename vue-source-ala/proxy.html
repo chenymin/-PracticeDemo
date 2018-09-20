@@ -74,6 +74,18 @@
 
   const proxyFun = creatProxyFun (callBack)
   proxyFun(1)
+
+  function myfunction () {
+    console.log('----->1')
+    function test1() {
+      console.log('----->2')
+      console.log('----->myVar' + myVar)
+    }
+    test1()
+    var myVar = 3
+    console.log('----->3')
+  }
+  myfunction()
   </script>
 </body>
 </html>
