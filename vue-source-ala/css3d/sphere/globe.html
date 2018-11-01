@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .stage {
+      width: 300px;
+      height: 300px;
+      display: inline-block;
+      perspective: 1200px;
+      perspective-origin: 50% 50%;
+      margin: 20px;
+    }
+
+    .ball {
+      position: relative;
+      display: inline-block;
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      -webkit-transform-style: preserve-3d;
+      background: url('http://hop.ie/balls/images/world-map-one-color.png') repeat-x;
+      background-size: auto 100%;
+      animation: move-map 30s infinite linear;
+    }
+
+    .ball:before {
+      content: '';
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    .ball:after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      -webkit-filter: blur(0);
+      opacity: 0.3;
+      background: radial-gradient(circle at 50% 80%, #81e8f6, #76deef 10%, #055194 66%, #062745 100%);
+    }
+
+    .ball .shadow {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0) 50%);
+      transform: rotateX(90deg) translateZ(-150px);
+      z-index: -1;
+    }
+
+    @keyframes move-map {
+      0% {
+        background-position: -849px 0;
+      }
+
+      100% {
+        background-position: 0 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <section class="stage">
+    <figure class="ball">
+      <span class="shadow">
+      </span>
+    </figure>
+  </section>
+</body>
+
+</html>
