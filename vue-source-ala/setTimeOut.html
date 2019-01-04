@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
     <script>
         // setTimeout(function () {
@@ -81,7 +83,7 @@
         // }
 
         // 主要是if (typeof preAjax === 'function') preAjax = preAjax()这句
-        const mergePromise = (ajaxArray) => { 
+        const mergePromise = (ajaxArray) => {
             return ajaxArray.reduce((preAjax, ajax) => {
                 return new Promise(resolve => {
                     debugger
@@ -96,7 +98,7 @@
         }
 
         // 老袁写的
-         const mergePromise = (ajaxArray) => {
+        const mergePromise1 = (ajaxArray) => {
             //1,2,3 done [1,2,3]
             var arr = [],
                 ajaxLength = ajaxArray.length;
@@ -121,10 +123,22 @@
             return todo;
         }
 
-        mergePromise([ajax1, ajax2, ajax3]).then((data) => {
+        mergePromise1([ajax1, ajax2, ajax3]).then((data) => {
             console.log("done")
             console.log(data); // data为[1,2,3]
         })
+
+        objTest = {
+            a: '2'
+        }
+        var isLock = true
+        setInterval(function () {
+            if (isLock) {
+                console.log(isLock)
+                console.log(objTest.a)
+            }
+        }, 2000)
     </script>
 </body>
+
 </html>

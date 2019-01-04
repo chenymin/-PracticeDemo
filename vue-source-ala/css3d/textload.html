@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      body {
+        background: #3498db;
+        font-family: sans-serif;
+      }
+
+      .color {
+        font-size: 1.5em;
+        line-height: 1.5em;
+        border: 2px solid;
+        background: linear-gradient(#fff, #fff) left no-repeat,
+          rgba(0, 0, 0, 0.3);
+        background-size: 0% 100%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+        animation: change 5s linear forwards;
+      }
+
+      @keyframes change {
+        100% {
+          background-size: 100% 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <span class="color">
+      lorem ipsume lorem ipsume lorem ipsume lorem ipsume lorem ipsume lorem
+      ipsume lorem ipsume lorem ipsume lorem ipsume
+    </span>
+    <div class="color">
+      lorem ipsume lorem ipsume lorem ipsume lorem ipsume lorem ipsume lorem
+      ipsume lorem ipsume lorem ipsume lorem ipsume
+    </div>
+    <script>
+      const obj = {
+        a: 123,
+        b: 456
+      };
+    </script>
+  </body>
+</html>
