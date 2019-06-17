@@ -20,9 +20,52 @@
         console.log('---->3' + this.genious)
       }
     }
-    obj.test()
-    new obj().demo()
-    console.log(new obj())
+    // obj.test()
+    // new obj().demo()
+    // console.log(new obj())
+
+    function EventEmitter () {
+      let subscribers = [];
+      function subscribe (type, callback) {
+        subscribers[type] = subscribers[type] || [];
+        subscribers[type].push(callback); 
+      }
+
+      function notify (value, fn) {
+        try {
+          fn(value)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      function publish(type, value){
+        if(subscribers[type]){
+          let notifySubscriber = notify.bind(null, value);
+          subscribers[type].forEach(notifySubscriber);
+        }
+      }
+      
+      return Object.freeze({
+        subscribe,
+        publish
+      });
+    }
+    let eventEmitter = EventEmitter();
+    eventEmitter.subscribe("update", doSomething);
+    eventEmitter.subscribe("update", doSomethingElse);
+    eventEmitter.subscribe("add", doSomethingOnAdd);
+    eventEmitter.publish("update", {key: 122});
+    
+    function doSomething(value) { 
+      console.log('doSomething' + value.key)
+    }
+    function doSomethingElse(value) {
+      console.log('doSomethingElse' + value.key)
+    }
+    function doSomethingOnAdd(value) {
+      console.log('doSomethingOnAdd')
+    }
   </script>
 </body>
 </html>

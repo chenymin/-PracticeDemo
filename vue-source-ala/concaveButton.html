@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang='en' class=''>
+
+<head>
+  <script src='https://static.codepen.io/assets/editor/live/console_runner-1df7d3399bdc1f40995a35209755dcfd8c7547da127f6469fd81e5fba982f6af.js'></script>
+  <script src='https://static.codepen.io/assets/editor/live/css_reload-5619dc0905a68b2e6298901de54f73cefe4e079f65a75406858d92924b4938bf.js'></script>
+  <meta charset='UTF-8'>
+  <meta name="robots" content="noindex">
+  <link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
+  <link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg"
+    color="#111" />
+  <link rel="canonical" href="https://codepen.io/chen2/pen/KEbKLK?editors=1000" />
+
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css'>
+  <style class="cp-pen-styles">
+    @import url(https://fonts.googleapis.com/css?family=Roboto:400,100);
+
+    h1 {
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 3em;
+      text-shadow: 1px 1px 1px #777;
+    }
+
+    body {
+      background: #C6E3E7;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      display: block;
+    }
+
+    .btn-custom {
+      cursor: pointer;
+      overflow: hidden;
+      margin: 2em auto;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 100;
+      position: relative;
+      width: 105px;
+      padding: 1em 0;
+    }
+
+    .btn-custom--wide {
+      width: 155px;
+    }
+
+    .btn-custom--x-wide {
+      width: 205px;
+    }
+
+    .btn-custom--content {
+      background: #295778;
+      -webkit-transition: background 0.25s ease-in;
+    }
+
+    .btn-custom p {
+      color: #fff;
+      position: relative;
+      text-align: center;
+      padding: 0.5em;
+      z-index: 2;
+    }
+
+    .btn-custom:before,
+    .btn-custom:after {
+      height: 100%;
+      width: 100px;
+      border-radius: 45%;
+      box-shadow: 0px 40px 0 0 #295778;
+      margin: 0 auto;
+      content: '';
+      display: block;
+      position: absolute;
+      top: -77%;
+      transform: rotate(0deg);
+      left: 50%;
+      margin-left: -55%;
+      width: 110%;
+      z-index: 1;
+      -webkit-transition: box-shadow 0.25s ease-in;
+    }
+
+    .btn-custom:after {
+      box-shadow: 0px -40px 0 0 #295778;
+      top: auto;
+      bottom: -73%;
+    }
+
+    .btn-custom--content:hover p {
+      color: #295778;
+      z-index: 4;
+    }
+
+    .btn-custom--content:before,
+    .btn-custom--content:after {
+      height: 100%;
+      width: 100px;
+      border-radius: 45%;
+      box-shadow: 0px 0px 0 0 #E3E7B8;
+      margin: 0 auto;
+      content: '';
+      display: block;
+      position: absolute;
+      top: -77%;
+      transform: rotate(0deg);
+      left: 50%;
+      margin-left: -55%;
+      width: 110%;
+      z-index: 1;
+      -webkit-transition: box-shadow 0.25s ease-in;
+    }
+
+    .btn-custom--content:after {
+      box-shadow: 0px 0px 0 0 #E3E7B8;
+      top: auto;
+      bottom: -73%;
+      z-index: 3;
+    }
+
+    .btn-custom:hover .btn-custom--content:before {
+      box-shadow: 0px 50px 0 0 #E3E7B8;
+    }
+
+    .btn-custom:hover .btn-custom--content:after {
+      box-shadow: 0px -50px 0 0 #E3E7B8;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Double Concave Buttons!</h1>
+  <div class="btn-custom">
+    <div class="btn-custom--content">
+      <p>Testing</p>
+    </div>
+  </div>
+
+  <div class="odd-btn odd-btn--light">
+    <div class="odd-btn--content">
+      <p>Transparent</p>
+    </div>
+  </div>
+
+  <div class="odd-btn odd-btn--wide">
+    <div class="odd-btn--content">
+      <p>Another Button</p>
+    </div>
+  </div>
+
+  <div class="odd-btn odd-btn--x-wide">
+    <div class="odd-btn--content">
+      <p>Another Button w/ more Content</p>
+    </div>
+  </div>
+
+</body>
+
+</html>
