@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="output">
+  </div>
+  <!--参考链接 http://www.alloyteam.com/2014/12/di-aop-in-js/ -->
+  <!-- https://zhuanlan.zhihu.com/p/61018434 -->
+  <!-- https://medium.com/the-everyday-developer/creating-an-ioc-container-with-dependency-injection-in-javascript-9db228d34060 -->
+  <script>
+    (function (widnow) {
+      window.DI = {
+        serviceCache: {},
+        _argumentNames: function (fn) {
+          var ret, methodCode = fn.toString();
+          methodCode.replace(/\((.*?)\)/, function (match, g1) {
+            var argStr = g1.replace(/\s/g, '');
+            ret = argStr.length ? argStr.split(',') : [];
+          });
+          return ret;
+        },
+
+        service: function (serviceID, serviceFactory) {
+          this.serviceCache[serviceID] = new serviceFactory();
+          return this;
+        },
+
+        controller: function (controllerID, controllerCb) {
+          var controllerCbArgs = this._argumentNames(controllerCb);
+          var dependencies = [],
+            i = 0;
+
+          // 根据controllerCbArgs有序填充依赖
+          while (controllerCbArgs[i]) {
+            dependencies.push(this.serviceCache[controllerCbArgs[i]]);
+            i++;
+          }
+
+          controllerCb.apply({}, dependencies);
+          return this;
+        }
+      };
+
+    })(this);
+
+    DI.service('AT', function () {
+        this.name = 'Alloy Team';
+
+        this.concatUs = function () {
+          // document.body.innerHTML = 'Email: AlloyTeam@tencent.com';
+        };
+      })
+      .controller('c', function (AT) {
+        AT.concatUs();
+      });
+
+
+      'use strict';
+
+(function (w) {
+
+    var stack = {},
+        isArray = function (arr) {
+            return Object.prototype.toString.call(arr) === '[object Array]';
+        };
+
+    function JsInject () {
+        this.container = {};
+    }
+
+    JsInject.ERROR_RECURSION = 'Recursive failure : Circular reference for dependency ';
+    JsInject.ERROR_REGISTRATION = 'Already registered.';
+    JsInject.ERROR_ARRAY = 'Must pass array.';
+    JsInject.ERROR_FUNCTION = 'Must pass function to invoke.';
+    JsInject.ERROR_SERVICE = 'Service does not exist.';
+
+    JsInject.prototype.get = function(name) {
+        var wrapper = this.container[name];
+        if (wrapper) {
+            return wrapper();
+        }
+        throw JsInject.ERROR_SERVICE;
+    };
+
+    JsInject.prototype.invoke = function (fn, deps, instance, name) {
+        var i = 0,
+            args = [];
+        if (stack[name]) {
+            throw JsInject.ERROR_RECURSION + name + " : " + JSON.stringify(Object.keys(stack));
+        }
+        
+        stack[name] = instance; 
+        for (; i < deps.length; i += 1) {
+            args.push(this.get(deps[i]));
+        }
+        delete stack[name];
+        
+        return fn.apply(instance, args);
+    };
+
+    JsInject.prototype.register = function (name, annotatedArray) {
+        if (!isArray(annotatedArray)) {
+            throw JsInject.ERROR_ARRAY;
+        }
+
+        if (this.container[name]) {
+            throw JsInject.ERROR_REGISTRATION;
+        }
+
+        if (typeof annotatedArray[annotatedArray.length - 1] !== 'function') {
+            throw JsInject.ERROR_FUNCTION;
+        }
+
+        var _this = this;
+        this.container[name] = function () {
+            var Template = function () {},
+                result = {},
+                instance,
+                fn = annotatedArray[annotatedArray.length - 1],
+                deps = annotatedArray.length === 1 ? (annotatedArray[0].$$deps || []) :
+                    annotatedArray.slice(0, annotatedArray.length - 1),
+                injected;
+            Template.prototype = fn.prototype;
+            instance = new Template();
+            injected = _this.invoke(fn, deps, instance, name);
+            result = injected || instance;
+            _this.container[name] = function () {
+                return result;
+            };
+            return result;
+        };
+    };
+
+    function Wrapper() {
+        var ioc = new JsInject(), _that = this;
+        this.get = ioc.get.bind(ioc);
+        this.register = ioc.register.bind(ioc);
+        ioc.container['$$jsInject'] = function () {
+            return _that;
+        };
+    }
+
+    w.$$jsInject = Wrapper;
+})(window);
+
+function Main() {
+
+	const output = document.getElementById("output");
+
+	const log = msg => {
+  	var p = document.createElement("p");
+    p.innerText = msg;
+    output.appendChild(p);
+  };
+  
+  const $jsInject = new $$jsInject();
+	
+  function Car(wheels, engine) {
+  	this.wheels = wheels;
+    this.engine = engine;
+    this.action = () => {
+    	this.wheels.action();
+      this.engine.action();
+      log("The car drives by.");
+    }
+    log("Made a car.");
+  }
+  
+  $jsInject.register("car", ["wheels", "engine", Car]);
+  
+  function Engine(pistons) {
+  	this.pistons = pistons;
+    this.action = () => {
+    	this.pistons.action();
+      log("The engine goes vroom vroom.");
+    };
+    log("Made an engine.");
+  }
+  
+  $jsInject.register("engine", ["pistons", Engine]);
+  $jsInject.register("testEngine", ["testPistons", Engine]);
+  
+  function Wheels() {
+  	this.action = () => log("The wheels go 'round and 'round.");
+    log("Made some wheels.");
+  }
+  
+  $jsInject.register("wheels", [Wheels]);
+  
+  function Pistons() {
+  	this.action = () => log("The pistons fire up and down.");
+    log("Made some pistons.");
+  }
+  
+  $jsInject.register("pistons", [Pistons]);
+  
+  function TestPistons() {
+  	this.action = () => log("The test pistons do nothing.");
+    log("Made some test pistons.");
+  }
+  
+  $jsInject.register("testPistons", [TestPistons]);
+  
+  var car = $jsInject.get("car");
+  car.action();
+  var testEngine = $jsInject.get("testEngine");
+  testEngine.action();
+}
+
+setTimeout(Main, 0);
+  </script>
+</body>
+
+</html>
