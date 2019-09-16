@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #box{
+            width: 50px;
+            height: 50px;
+            background-color: #000;
+        }
+    </style>
+</head>
+<body>
+<div id="box"></div>
+<script>
+    var element = document.getElementById('box');
+    var startTime;
+    var duration = 1000; // 1 second or 1000ms
+    var distance = 60; // 60FPS
+
+    var rAFCallback = function( timestamp ){
+        startTime = startTime || timestamp; // set startTime is null
+        console.log(startTime, timestamp)
+        var timeElapsedSinceStart = timestamp - startTime;
+        var progress = timeElapsedSinceStart / 1000;
+
+        var safeProgress = Math.min( progress.toFixed(2), 1 ); // 2 decimal points
+
+        var newPosition = safeProgress * distance;
+        console.log(startTime, timestamp, newPosition)
+        element.style.transform = 'translateX('+ newPosition + 'px)';
+
+        // we need to progress to reach 100%
+        if( safeProgress != 1 ){
+            requestAnimationFrame( rAFCallback );
+        }
+    }
+
+    // request animation frame on render
+    requestAnimationFrame( rAFCallback );
+</script>
+</body>
+</html>
