@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>promise处理链式</title>
+    </head>
+    <body>
+        <script>
+            const processor = steps => steps.reduce((p, fn) => {
+                let proceed = true
+                return p.then((res) => {
+                    if (proceed) { return fn(res) }
+                }).catch(err => {
+                    proceed = false
+                    console.log(err)
+                })
+            }, Promise.resolve({}))
+
+            const aPromise = text => {
+                return new Promise(resolve => setTimeout(() => {
+                    console.log('A Promise:', text);
+                    resolve(text)
+                }, 1000))
+            }
+            const task1 = [
+                () => aPromise('step'),
+                res => aPromise(`${res} - step2`),
+                res => aPromise(`${res} - step3`)
+            ]
+            processor(task1)
+        </script>
+    </body>
+</html>
