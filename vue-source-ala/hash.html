@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        const hash = value => {
+            let hashed = 0;
+
+            for (let i = 0; i < value.length; i += 1) {
+                hashed = (hashed << 5) - hashed + value.charCodeAt(i);
+                hashed |= 0;
+            }
+
+            return `${hashed}`;
+        };
+
+
+        const cache = {};
+
+        class Node {
+            constructor(config) {
+                const id = hash(`${config}`);
+
+                if (cache[id]) {
+                    return cache[id];
+                } else {
+                    cache[id] = this;
+                    config();
+                }
+            }
+        }
+
+        const node = new Node(() => {});
+        const nodeReference = new Node(() => {});
+        const secondNode = new Node(() => {
+            console.log("Hello");
+        });
+
+        console.log(node === nodeReference, node === secondNode); // true, false
+    </script>
+</body>
+</html>
