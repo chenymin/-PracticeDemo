@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>根据成绩贴标签</title>
+</head>
+<body>
+<script>
+    function rankBySort (totalSort, sort, standard, minDividSort) {
+        const mark = ['A', 'B', 'C', 'D', 'F']
+        const level = (totalSort - sort) / standard
+        const levelIndex = level === 0 || level.toString().indexOf('.') > 0 ? level : level - 1
+        if (sort < minDividSort) {
+            return mark[mark.length - 1]
+        }
+        return mark[Math.floor(levelIndex)]
+    }
+    // console.log(rankBySort(100, 100, 10, 60))
+    // console.log(rankBySort(60, 60, 10, 20))
+    console.log(rankBySort(150, 75.6, 20, 90))
+</script>
+</body>
+</html>
