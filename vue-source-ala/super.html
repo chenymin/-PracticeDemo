@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h4>grouper</h4>
+    <div id="grouper"></div>
+    <h4>rainbow trout</h4>
+    <div id="rainbowTrout"></div>
+    <div id="rainbowTroutParent"></div>
+    <script>
+        function Fish(habitat, length) {
+            this.habitat = habitat;
+            this.length = length;
+        }
+
+        Fish.prototype.renderProperties = function(element) {
+            element.innerHTML = JSON.stringify(this)
+        };
+
+        function Trout(habitat, length, variety) {
+            this._super.call(this, habitat, length);
+            this.variety = variety;
+        }
+
+        Trout.prototype = Object.create(Fish.prototype);
+        Trout.prototype.constructor = Trout;
+        Trout.prototype._super = Fish;
+
+        Trout.prototype.renderPropertiesWithSuper = function(element) {
+            element.className="green";
+            this.renderProperties(element);
+        };
+
+        let grouper = new Fish("saltwater", "26in");
+        grouper.renderProperties(document.getElementById("grouper"));
+
+        var rainbowTrout = new Trout("freshwater", "14in", "rainbow");
+        //invoke function from parent
+        rainbowTrout.renderProperties(document.getElementById("rainbowTrout"));
+        //invoke function from child
+        rainbowTrout.renderPropertiesWithSuper(document.getElementById("rainbowTroutParent"));
+
+        console.log(rainbowTrout._super)
+</script>
+</body>
+</html>
