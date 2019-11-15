@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function run(generator) {
+        const iterator = generator();
+        let result = iterator.next();
+        (function step () {
+            console.log('---->' + result.done)
+            if (!result.done) {
+                if (typeof result.value === 'function') {
+                    result.value((err, date) => {
+                        if (err) {
+                            iterator.throw(err)
+                            return
+                        }
+                        result = iterator.next(date)
+                        step()
+                    })
+                } else {
+                    result = iterator.next(result.value)
+                    step()
+                }
+            }
+        })()
+    }
+    function fetchData(id, callback) {
+        setTimeout(() => {
+            const people = [
+                {
+                    id: 1,
+                    name: 'eric',
+                    age: 32
+                },
+                {
+                    id: 2,
+                    name: 'Rosmery',
+                    age: 29
+                }
+            ]
+            const person = people.filter(p => p.id === id )[0]
+            person ? callback(null, person) : callback(new Error('the person was not found'), null)
+        }, 1000)
+    }
+    const fetchWrapper = id => callback => fetchData(id, callback)
+    const test = (a) => a * a
+    run(function*() {
+        const person1 = yield fetchWrapper(3)
+        const person2 = yield test(2)
+        console.log(person1, person2)
+    })
+</script>
+</body>
+</html>
