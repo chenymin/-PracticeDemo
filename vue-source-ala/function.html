@@ -48,11 +48,94 @@
     }
     const fetchWrapper = id => callback => fetchData(id, callback)
     const test = (a) => a * a
-    run(function*() {
-        const person1 = yield fetchWrapper(3)
-        const person2 = yield test(2)
-        console.log(person1, person2)
-    })
+    // run(function*() {
+    //     const person1 = yield fetchWrapper(3)
+    //     const person2 = yield test(2)
+    //     console.log(person1, person2)
+    // })
+
+    const people = [{
+        id: 1,
+        firstName: 'John',
+        age: 34
+    }, {
+        id: 2,
+        firstName: 'Rose',
+        age: 25
+    }];
+    const cars = [{
+        ownerId: 1,
+        make: 'Ford',
+        year: 1988
+    }, {
+        ownerId: 2,
+        make: 'Audi',
+        year: 2001
+    }];
+    // const getPersonById = id => Promise.resolve(people.filter(p => p.id === id)[0]);
+    // const getCarByOwnerId = id => Promise.resolve(cars.filter(c => c.ownerId === id)[0]);
+    //
+    // Promise.prototype.map = function (fn) {
+    //     return new Promise((resolve, reject) => this.then(x =>
+    //         resolve(fn(x))).catch(e => reject(e)));
+    // };
+    // Promise.resolve(3).map(x => x + 2).then(console.log);
+
+    const curry = (fn) => {
+        const arity = fn.length;
+        return function $curry(...args) {
+            if (args.length < arity) {
+                return $curry.bind(null, ...args);
+            }
+            return fn.call(null, ...args);
+        };
+    };
+
+    // function add(a, b, c) {
+    //     return a + b + c
+    // }
+    //
+    // const addCurry = curry(add)
+    //
+    // console.log(addCurry(1)(2)(3))
+
+    const compose = (...fn) => {
+        return function (n) {
+         return fn.reduceRight(function (acc, fn) {
+             return fn(acc)
+         }, n)
+        }
+    };
+
+    const head = a => a[0];
+
+    const filter = curry((predicate, a) => a.filter(predicate));
+
+    const first = predicate => compose(head, filter(predicate));
+
+    const getPersonById = id => first(p => p.id === id);
+
+    const getCarByOwnerId = id => first(p => p.ownerId === id);
+
+    const prop = propName => obj => obj[propName];
+
+    const map = curry((fn, mappable) => mappable.then(fn));
+
+    const getPersonByIdFrom = curry((source, id) =>
+        Promise.resolve(getPersonById(id)(source)));
+
+    const getCarByOwnerIdFrom = curry((source, person) =>
+        Promise.resolve(getCarByOwnerId(person.id)(source)));
+
+    const getMakeForOwnerId =
+        compose(map(prop('make')), map(getCarByOwnerIdFrom(cars)),
+            getPersonByIdFrom(people));
+
+    getMakeForOwnerId(2)
+        .then(console.log)
+    .catch(e => console.log(`The following error occurred: ${e}`));
+
+
 </script>
 </body>
 </html>
