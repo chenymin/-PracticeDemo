@@ -1,0 +1,174 @@
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: #121B21;
+    color: #1a1a1a;
+    font-family: 'PingFangSC-Ultralight', 'helvetica neue', 'hiragino sans gb', 'arial', 'microsoft yahei ui', 'microsoft yahei', 'simsun', 'sans-serif';
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0 auto;
+    padding: 0px;
+    height: 100%;
+    overflow: hidden;
+}
+
+img {
+    outline: 0px;
+    border: none;
+}
+
+.wc525 {
+    width: 525px;
+    margin: 0 auto;
+}
+
+.globalback {
+    position: absolute;
+    width: 800px;
+    height: 577px;
+    top: -50px;
+    left: 0px;
+    z-index: 1;
+}
+
+.loginContainter {
+    height: 100%;
+    background: url(../img/loginbg.png);
+}
+
+.logincnt {
+    width: 400px;
+    padding: 150px 62px 0;
+    position: relative;
+    z-index: 2;
+}
+
+#headerbar {
+    height: 100px;
+}
+
+#headerbar .hd-logo {
+    width: 142px;
+    height: 46px;
+    margin: 0px 0 0 0px;
+    float: left;
+}
+
+.split {
+    font-size: 18px;
+    color: #FFF;
+    margin: 10px 24px 0 24px;
+    float: left;
+}
+
+.slogan {
+    font-size: 18px;
+    color: #FFF;
+    float: left;
+    margin: 10px 0 0 0;
+}
+
+.loginform {}
+
+.ipt {
+    width: 100%;
+    height: 50px;
+    background: #fff;
+    margin: 0px 0 20px 0;
+}
+
+.ipt .icon {
+    float: left;
+    margin: 12px 15px 0;
+}
+
+.ipt .userinput {
+    float: left;
+}
+
+.ipt img {
+    width: 19px;
+    height: 26px;
+}
+
+.ipt input {
+    width: 200px;
+    height: 50px;
+    border: none;
+    padding: 0px;
+    outline: 0px;
+    font-size: 20px;
+    font-family: 'PingFangSC-light', 'helvetica neue', 'hiragino sans gb', 'arial', 'microsoft yahei ui', 'microsoft yahei', 'simsun', 'sans-serif';
+}
+
+input::-webkit-input-placeholder {
+    color: #BBB;
+    font-family: 'PingFangSC-Ultralight', 'helvetica neue', 'hiragino sans gb', 'arial', 'microsoft yahei ui', 'microsoft yahei', 'simsun', 'sans-serif'
+}
+
+.loginform button {
+    width: 400px;
+    height: 54px;
+    background-color: #AA885F;
+    margin: 20px 0;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    font-family: 'PingFangSC-Ultralight', 'helvetica neue', 'hiragino sans gb', 'arial', 'microsoft yahei ui', 'microsoft yahei', 'simsun', 'sans-serif';
+    cursor: pointer;
+    outline: none;
+}
+
+.loginform button:hover {
+    background-color: #9C7145;
+}
+
+.footercnt {
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    padding: 0 0 20px 0;
+}
+
+.footercnt a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footercopyright {
+    opacity: 0.4;
+    margin-bottom: 10px;
+}
+
+#logincanvas {
+    position: absolute;
+    left: 0px;
+    top: 30%;
+    z-index: 0;
+}
+
+.error {
+    height: 40px;
+    text-align: center;
+    margin: -60px 0 30px 0;
+}
+
+#errorinfo {
+    height: 40px;
+    background: #f1453D;
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+    line-height: 40px;
+    vertical-align: middle;
+    border-radius: 2px;
+    display: none;
+}
