@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>By</title>
+</head>
+<body>
+<script>
+    const arr = [
+        {
+            imageName: "1416523-20190504220927760-1924551379.png",
+            imageNo: "20200114CCI00000024643",
+            imageType: "03",
+            imageUrl: "http://sk.sit.fosuntech.cn/group1/M00/06/52/CqYKHV4dWVeAedriAAG6BlREBPA533.png"
+        },
+        {
+            imageName: "1416523-20190504220927760-1924551379.png",
+            imageNo: "20200114CCI00000034648",
+            imageType: "04",
+            imageUrl: "http://sk.sit.fosuntech.cn/group2/M00/06/78/CqYKgV4dWXWABMFWAAG6BlREBPA817.png"
+        },
+        {
+            imageName: "1416523-20190504220927760-1924551379.png",
+            imageNo: "20200114CCI00000044653",
+            imageType: "10",
+            imageUrl: "http://sk.sit.fosuntech.cn/group1/M00/06/52/CqYKHV4dWXyAN7t2AAG6BlREBPA669.png"
+        },
+        {
+            imageName: "1416523-20190504220927760-1924551379.png",
+            imageNo: "20200114CCI00000044653",
+            imageType: "10",
+            imageUrl: "http://sk.sit.fosuntech.cn/group1/M00/06/52/CqYKHV4dWXyAN7t2AAG6BlREBPA669.png"
+        },
+        {
+            imageName: "1416523-20190504220927760-1924551379.png",
+            imageNo: "20200114CCI00000054660",
+            imageType: "09",
+            imageUrl: "http://sk.sit.fosuntech.cn/group2/M00/06/78/CqYKgV4dWYSAMQC_AAG6BlREBPA055.png"
+        },
+        {
+            imageName: "1416523-20190504220927760-1924551379.png",
+            imageNo: "20200114CCI00000064685",
+            imageType: "01",
+            imageUrl: "http://sk.sit.fosuntech.cn/group1/M00/06/52/CqYKHV4dWiCAYejwAAG6BlREBPA239.png"
+        },
+        {
+            imageName: "1416523-20190504220927760-1924551379.png",
+            imageNo: "20200114CCI00000074686",
+            imageType: "02",
+            imageUrl: "http://sk.sit.fosuntech.cn/group1/M00/06/52/CqYKHV4dWimABuAhAAG6BlREBPA602.png"
+        }
+    ]
+
+    const typeObj = {
+        '01': 'idCardFont',
+        '02': 'idCardBack',
+        '03': 'idCardHand',
+        '04': 'businessLicense',
+        '10': 'enterpriseSpecial',
+        '09': 'other'
+    }
+
+    const formDate = {
+        idCardFont: [],
+        idCardBack: [],
+        idCardHand: [],
+        businessLicense: [],
+        enterpriseSpecial: [],
+        other: []
+    }
+
+    arr.forEach((item) => {
+        formDate[typeObj[item.imageType]].push(item)
+    })
+
+    console.log(formDate)
+
+
+    const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    const groupByNum = 3;
+    function groupArray(data, cols) {
+        const r = data.reduce((r, t) => {
+            r.current.push(t);
+            if (r.current.length === cols) {
+                r.list.push(r.current);
+                r.current = [];
+            }
+            return r;
+        }, { list: [], current: [] });
+
+        if (r.current.length) {
+            r.list.push(r.current);
+        }
+
+        return r.list;
+    }
+
+    const result = groupArray(data, groupByNum);
+
+    let array = [
+        {category: "teacher", name: "Mr.Li", age: 40},
+        {category: "teacher", name: "Mr.Wang", age: 20},
+        {category: "student", name: "Xiao Ming",age: 12},
+        {category: "student", name: "Xiao Hua", age: 20}
+    ]
+    function classifiedAccordingToKey(objectArray, key){
+        var newObj = {};
+        objectArray.forEach(function (obj) {
+            var array = newObj[obj[key]] || [];
+            array.push(obj);
+            newObj[obj[key]] = array;
+        });
+        return newObj;
+    }
+    // console.log(classifiedAccordingToKey(array, 'category'))
+
+    function classifiedByKey (objectArray, key) {
+        return objectArray.reduce(function (accumulator, currentValue, currentIndex, array) {
+            const arr = accumulator[currentValue[key]] || []
+            arr.push(currentValue)
+            accumulator[currentValue[key]] = arr
+            return accumulator
+        }, {})
+    }
+    console.log(classifiedByKey(array, 'category'))
+</script>
+</body>
+</html>
