@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            padding: 50px;
+            font: 1em Helvetica Neue, Helvetica, Arial, sans-serif;
+        }
+
+        .grid {
+            border: 5px solid rgb(111,41,97);
+            display: grid;
+            grid-template-columns: repeat(5, 100px);
+            grid-template-rows: repeat(5, 50px);
+            inline-size: 500px;
+        }
+
+        .item {
+            grid-column: 2 / 4;
+            grid-row: 1 / 4;
+        }
+
+        /*.item {*/
+            /*grid-column-start: 2;*/
+            /*grid-column-end: 4;*/
+            /*grid-row-start: 1;*/
+            /*grid-row-end: 4;*/
+        /*}*/
+
+        .item {
+            grid-area: 1 / 2 / 4 / 4;
+        }
+
+        .grid > * {
+            background-color: rgba(111,41,97,.4);
+            border-radius: 5px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div class="item">Item</div>
+    </div>
+</body>
+</html>

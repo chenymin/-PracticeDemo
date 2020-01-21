@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            margin: 0 ;
+            padding: 2em 0 0 0;
+            font: 125% "Open sans", sans-serif;
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns:
+                    [full-start] minmax(0,1fr)
+                    [content-start start-half-start] minmax(0,1fr)
+                    [center-start] minmax(0,2fr)
+                    [start-half-end end-half-start] minmax(0,2fr)
+                    [center-end] minmax(0,1fr)
+                    [end-half-end content-end] minmax(0,1fr)
+                    [full-end];
+        }
+
+        .grid > * {
+            background-color: rgb(114,132,168);
+            color: #fff;
+            padding: 1em;
+            margin: 0;
+        }
+
+        .content {
+            grid-row: 1;
+            grid-column: content-start / content-end;
+        }
+
+        .full-1 {
+            grid-row: 2;
+            grid-column: full-start / full-end;
+        }
+
+        .start-half {
+            grid-row: 3;
+            grid-column: start-half-start / start-half-end;
+        }
+
+        .end-half {
+            grid-row: 3;
+            grid-column: end-half-start / end-half-end;
+        }
+
+        .full-2 {
+            grid-row: 4;
+            grid-column: full-start / full-end;
+        }
+
+        .center {
+            grid-row: 5;
+            grid-column: center-start / center-end;
+        }
+    </style>
+</head>
+<body>
+<div class="grid">
+    <div class="content">content</div>
+    <div class="full-1">full width</div>
+    <div class="start-half">start-half</div>
+    <div class="end-half">end-half</div>
+    <div class="full-2">full-width</div>
+    <div class="center">center</div>
+</div>
+</body>
+</html>

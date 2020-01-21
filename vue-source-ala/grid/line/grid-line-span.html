@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            padding: 50px;
+            font: 1em Helvetica Neue, Helvetica, Arial, sans-serif;
+        }
+
+        .grid {
+            border: 5px solid rgb(111,41,97);
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(5, 50px);
+            inline-size: 500px;
+        }
+
+        .item1 {
+            grid-column: auto / span 3;
+        }
+
+        .item2 {
+            grid-column: auto / span 2;
+            grid-row: auto / span 2;
+        }
+
+        .grid > * {
+            background-color: rgba(111,41,97,.4);
+            border-radius: 5px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="grid">
+    <div class="item1">Item 1</div>
+    <div class="item2">Item 2</div>
+</div>
+</body>
+</html>

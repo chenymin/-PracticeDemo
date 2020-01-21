@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--https://www.smashingmagazine.com/2019/10/editorial-design-patterns-css-grid-subgrid-naming/-->
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            margin: 0 ;
+            padding: 2em;
+            font: 125% "Open sans", sans-serif;
+        }
+
+        .grid {
+            display: grid;
+            border: 2px solid rgb(124,222,220);
+            gap: 20px;
+            grid-template-rows: 100px auto 100px;
+            grid-template-columns:
+                    minmax(0,1fr)
+                    minmax(0,1fr)
+                    minmax(0,2fr)
+                    minmax(0,2fr)
+                    minmax(0,1fr)
+                    minmax(0,1fr);
+            grid-template-areas:
+                    ". . ....... ....... . ."
+                    ". . content content . ."
+                    ". . content content . .";
+        }
+
+        .grid > * {
+            background-color: rgb(114,132,168);
+            color: #fff;
+            padding: 1em;
+            margin: 0;
+        }
+
+        .content {
+            grid-area: content;
+        }
+    </style>
+</head>
+<body>
+<div class="grid">
+    <div class="content">content</div>
+</div>
+</body>
+</html>

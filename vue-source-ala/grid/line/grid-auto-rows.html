@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            padding: 50px;
+            font: 1em Helvetica Neue, Helvetica, Arial, sans-serif;
+        }
+
+        .grid {
+            border: 5px solid rgb(111,41,97);
+            display: grid;
+            grid-template-columns: repeat(5, 100px);
+            grid-auto-rows: 5em;
+            inline-size: 500px;
+        }
+
+        .grid > * {
+            background-color: rgba(111,41,97,.4);
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .grid > .placed {
+            background-color: orange;
+            grid-row: 1 / -1; /* the end line is in the implicit grid so -1 does not resolve to it*/
+            /*grid-row-start: 1;*/
+            /*grid-row-end: -1;*/
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+        <div class="placed">Placed</div>
+    </div>
+</body>
+</html>

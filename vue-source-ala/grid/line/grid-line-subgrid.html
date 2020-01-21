@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            padding: 50px;
+            font: 1em Helvetica Neue, Helvetica, Arial, sans-serif;
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+
+        .card {
+            border: 5px solid rgb(111,41,97);
+            grid-row: auto / span 2;
+            display: grid;
+            gap: 0;
+            grid-template-rows: subgrid;
+        }
+
+        .card h2 {
+            background-color: rgba(111,41,97,.4);
+            padding: 10px;
+            margin: 0;
+        }
+
+        .card p {
+            padding: 10px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="grid">
+    <article class="card">
+        <h2>This is the heading</h2>
+        <p>This is the body of the card.</p>
+    </article>
+    <article class="card">
+        <h2>This is the heading and some headings are bigger</h2>
+        <p>This is the body of the card.</p>
+    </article>
+    <article class="card">
+        <h2>This is the heading</h2>
+        <p>This is the body of the card.</p>
+    </article>
+    <article class="card">
+        <h2>This is the heading</h2>
+        <p>This is the body of the card.</p>
+    </article>
+    <article class="card">
+        <h2>This is the heading</h2>
+        <p>This is the body of the card.</p>
+    </article>
+    <article class="card">
+        <h2>This is the heading</h2>
+        <p>This is the body of the card.</p>
+    </article>
+</div>
+</body>
+</html>

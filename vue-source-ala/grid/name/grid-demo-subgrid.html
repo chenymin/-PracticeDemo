@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            margin: 0 ;
+            padding: 2em 0 0 0;
+            font: 125% "Open sans", sans-serif;
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns:
+                    [full-start] minmax(0,1fr)
+                    [content-start start-half-start] minmax(0,1fr)
+                    [center-start] minmax(0,2fr)
+                    [start-half-end end-half-start] minmax(0,2fr)
+                    [center-end] minmax(0,1fr)
+                    [end-half-end content-end] minmax(0,1fr)
+                    [full-end];
+        }
+
+        .grid > * {
+            background-color: rgb(114,132,168);
+            color: #fff;
+            padding: 1em;
+            margin: 0;
+        }
+
+        .content {
+            grid-row: 1;
+            grid-column: content;
+            display: grid;
+            grid-template-columns: subgrid;
+        }
+
+        .content ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            grid-column: content;
+            display: grid;
+            row-gap: 10px;
+            grid-template-columns: subgrid;
+        }
+
+        .content li {
+            background-color: rgb(124,222,220);
+        }
+
+        .content li:nth-child(1) {
+            grid-column: center;
+        }
+
+        .content li:nth-child(2) {
+            grid-column: start-half;
+        }
+
+        .content li:nth-child(3) {
+            grid-column: end-half;
+        }
+
+        .content li:nth-child(4) {
+            grid-column: content;
+        }
+
+
+        .full-1 {
+            grid-row: 2;
+            grid-column: full;
+        }
+
+        .start-half {
+            grid-row: 3;
+            grid-column: start-half;
+        }
+
+        .end-half {
+            grid-row: 3;
+            grid-column: end-half;
+        }
+
+        .full-2 {
+            grid-row: 4;
+            grid-column: full;
+            display: grid;
+            row-gap: 10px;
+            grid-template-columns: subgrid;
+        }
+
+        .full-2 > div {
+            background-color: rgb(124,222,220);
+            grid-column: center;
+        }
+
+        .center {
+            grid-row: 5;
+            grid-column: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div class="content">
+            <ul>
+                <li>list 1</li>
+                <li>list 2</li>
+                <li>list 3</li>
+                <li>list 4</li>
+            </ul>
+        </div>
+        <div class="full-1">full width</div>
+        <div class="start-half">start-half</div>
+        <div class="end-half">end-half</div>
+        <div class="full-2">
+            <div>Nested 1</div>
+            <div>Nested 2</div>
+        </div>
+        <div class="center">center</div>
+    </div>
+</body>
+</html>

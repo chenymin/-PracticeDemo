@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            padding: 50px;
+            font: 1em Helvetica Neue, Helvetica, Arial, sans-serif;
+        }
+
+        .grid {
+            border: 5px solid rgb(111,41,97);
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            width: 500px;
+        }
+
+        .grid > * {
+            background-color: rgba(111,41,97,.4);
+            border-radius: 5px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div>Item One</div>
+        <div>Item Two</div>
+        <div>Item Three</div>
+        <div>Item Four</div>
+    </div>
+</body>
+</html>
