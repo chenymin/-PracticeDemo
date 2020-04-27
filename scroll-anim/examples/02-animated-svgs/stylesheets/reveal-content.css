@@ -1,0 +1,247 @@
+footer, header {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: #333;
+  color: #fff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100vh;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+footer p, header p {
+  margin: 0;
+  text-align: center;
+}
+
+/* Styles for the animated SVG badges (triggered on scroll) */
+
+.badge {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: green;
+  border-radius: 50%;
+  box-shadow: 0 .2rem .1rem .1rem rgba(0,0,0,0.2);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  height: 10rem;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 0 auto;
+  min-width: 10rem;
+  position: relative;
+  -webkit-transform: scale(.5);
+          transform: scale(.5);
+  width: 10rem;
+}
+
+.badge::before {
+  border: 6px solid #fff;
+  border-radius: 50%;
+  bottom: 2.5px;
+  content: "";
+  left: 2.5px;
+  position: absolute;
+  right: 2.5px;
+  top: 2.5px;
+  -webkit-transform: scale(.5);
+  transform: scale(.5);
+}
+
+.badge.first {
+  background: red;
+}
+
+.badge.third {
+  background: yellow;
+}
+
+.badge svg {
+  z-index: 10;
+}
+
+.is-visible .badge {
+  -webkit-transform: none;
+  transform: none;
+}
+
+.is-visible .badge::before {
+  -webkit-transform: none;
+  transform: none;
+  -webkit-transition: -webkit-transform .5s cubic-bezier(0,1,.3,1);
+  transition: -webkit-transform .5s cubic-bezier(0,1,.3,1);
+  transition: transform .5s cubic-bezier(0,1,.3,1);
+  transition: transform .5s cubic-bezier(0,1,.3,1), -webkit-transform .5s cubic-bezier(0,1,.3,1);
+  -webkit-transition-delay: .2s;
+  transition-delay: .2s;
+}
+
+.is-visible .svg-to-animate {
+  -webkit-animation: show-svg-outline 1s .5s cubic-bezier(0,1,.3,1) forwards;
+  animation: show-svg-outline 1s .5s cubic-bezier(0,1,.3,1) forwards;
+  stroke-dashoffset: 0;
+}
+
+.is-visible .rock1 .svg-to-animate {
+  -webkit-animation-delay: .5s;
+  animation-delay: .5s;
+}
+
+.is-visible .rock2 .svg-to-animate {
+  -webkit-animation-delay: 1s;
+  animation-delay: 1s;
+}
+
+.is-visible .rock3 .svg-to-animate {
+  -webkit-animation-delay: 1.3s;
+  animation-delay: 1.3s;
+}
+
+.badge .fill, .badge .decor {
+  opacity: 0;
+  -webkit-transform: scale(.2);
+          transform: scale(.2);
+  -webkit-transform-origin: 50% 50%;
+          transform-origin: 50% 50%;
+  -webkit-transition: none;
+  transition: none;
+}
+
+.is-visible .badge .fill, .is-visible .badge .decor {
+  opacity: 1;
+  -webkit-transform: none;
+  transform: none;
+  -webkit-transition: opacity .2s 1s ease-out,
+                -webkit-transform .8s 1s cubic-bezier(0,1,.3,1);
+  transition: opacity .2s 1s ease-out,
+                -webkit-transform .8s 1s cubic-bezier(0,1,.3,1);
+  transition: transform .8s 1s cubic-bezier(0,1,.3,1),
+                opacity .2s 1s ease-out;
+  transition: transform .8s 1s cubic-bezier(0,1,.3,1),
+                opacity .2s 1s ease-out,
+                -webkit-transform .8s 1s cubic-bezier(0,1,.3,1);
+}
+
+.is-visible .rock1 .fill {
+  -webkit-transition-delay: 1.5s;
+  transition-delay: 1.5s;
+}
+
+.is-visible .rock2 .fill {
+  -webkit-transition-delay: 2s;
+  transition-delay: 2s;
+}
+
+.is-visible .rock3 .fill {
+  -webkit-transition-delay: 2.3s;
+  transition-delay: 2.3s;
+}
+
+.is-visible .rock1 .decor {
+  -webkit-transition-delay: 1.8s;
+  transition-delay: 1.8s;
+}
+
+.is-visible .rock2 .decor {
+  -webkit-transition-delay: 2.2s;
+  transition-delay: 2.2s;
+}
+
+.is-visible .rock3 .decor {
+  -webkit-transition-delay: 2.4s;
+  transition-delay: 2.4s;
+}
+
+@-webkit-keyframes show-svg-outline {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes show-svg-outline {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Styles for highlighting the current hovered content area */
+
+/* Hide the parts we'll show when highlighted */
+
+.option .more-info {
+  visibility: hidden;
+}
+
+.option .call-to-action {
+  -webkit-transform: scale(.2);
+          transform: scale(.2);
+  visibility: hidden;
+}
+
+/* Set up the "highlighted" state */
+
+.is-visible .option.highlighted {
+  background: #fff;
+  border-color: #eee;
+  -webkit-transform: scale(1.2) translateY(1em);
+          transform: scale(1.2) translateY(1em);
+}
+
+.is-visible .option.highlighted .badge {
+  -webkit-transform: translateY(-5em) scale(1.2);
+          transform: translateY(-5em) scale(1.2);
+}
+
+.is-visible .option.highlighted h2 {
+  -webkit-transform: translateY(-3.5em);
+          transform: translateY(-3.5em);
+}
+
+.is-visible .option.highlighted .more-info {
+  -webkit-transform: translateY(-4em);
+          transform: translateY(-4em);
+  visibility: visible;
+}
+
+.is-visible .option.highlighted .call-to-action {
+  -webkit-transform: translateY(1.25em);
+          transform: translateY(1.25em);
+  visibility: visible;
+}
+
+.is-visible .option.highlighted .summary {
+  visibility: hidden;
+}
+
+/* Transitions */
+
+.option {
+  -webkit-transition: background .2s ease-out,
+              -webkit-transform 5s cubic-bezier(0,1.7,.3,1);
+  transition: background .2s ease-out,
+              -webkit-transform 5s cubic-bezier(0,1.7,.3,1);
+  transition: transform 5s cubic-bezier(0,1.7,.3,1),
+              background .2s ease-out;
+  transition: transform 5s cubic-bezier(0,1.7,.3,1),
+              background .2s ease-out,
+              -webkit-transform 5s cubic-bezier(0,1.7,.3,1);
+}
+
+.option > * {
+  -webkit-transition: -webkit-transform .5s cubic-bezier(0,1,.3,1);
+  transition: -webkit-transform .5s cubic-bezier(0,1,.3,1);
+  transition: transform .5s cubic-bezier(0,1,.3,1);
+  transition: transform .5s cubic-bezier(0,1,.3,1), -webkit-transform .5s cubic-bezier(0,1,.3,1);
+}
+
+
+

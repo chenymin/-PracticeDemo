@@ -1,0 +1,154 @@
+/* Style the container */
+
+.bubble-container {
+  -webkit-animation: show-bubble 1s cubic-bezier(0,1.47,1,1) forwards,
+             drift-up 30s 1s linear forwards;
+          animation: show-bubble 1s cubic-bezier(0,1.47,1,1) forwards,
+             drift-up 30s 1s linear forwards;
+  position: absolute;
+}
+
+.bubble-container.behind {
+  opacity: .5;
+  z-index: 0;
+}
+
+@-webkit-keyframes show-bubble {
+  0% {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes show-bubble {
+  0% {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+
+@-webkit-keyframes drift-up {
+  to {
+    -webkit-transform: translateY(-10em);
+            transform: translateY(-10em);
+  }
+}
+
+
+@keyframes drift-up {
+  to {
+    -webkit-transform: translateY(-10em);
+            transform: translateY(-10em);
+  }
+}
+
+/* Styles for the bubbles */
+
+.ball {
+  background: -webkit-radial-gradient(bottom, circle, #81e8f6, #76deef 10%, #055194 80%, #062745 100%);
+  background: radial-gradient(circle at bottom, #81e8f6, #76deef 10%, #055194 80%, #062745 100%);
+  border-radius: 100%;
+  display: inline-block;
+  height: 100%;
+  position: relative;
+  width: 100%; }
+  .ball:before {
+    background: -webkit-radial-gradient(top, circle, white, rgba(255, 255, 255, 0) 58%);
+    background: radial-gradient(circle at top, white, rgba(255, 255, 255, 0) 58%);
+    border-radius: 100%;
+    content: "";
+    -webkit-filter: blur(5px);
+    filter: blur(5px);
+    height: 90%;
+    left: 5%;
+    position: absolute;
+    top: 1%;
+    width: 90%;
+    z-index: 2; }
+  .ball:after {
+    border-radius: 100%;
+    content: "";
+    display: none;
+    -webkit-filter: blur(1px);
+    filter: blur(1px);
+    height: 80%;
+    left: 10%;
+    position: absolute;
+    top: 5%;
+    -webkit-transform: rotateZ(-30deg);
+    transform: rotateZ(-30deg);
+    width: 80%;
+    z-index: 2; }
+  .ball.plain {
+    background: black; }
+    .ball.plain:before, .ball.plain:after {
+      display: none; }
+  .ball.bubble {
+    -webkit-animation: bubble-anim 2s ease-out infinite;
+    animation: bubble-anim 2s ease-out infinite;
+    background: -webkit-radial-gradient(50% 55%, circle, rgba(240, 245, 255, 0.9), rgba(240, 245, 255, 0.9) 40%, rgba(225, 238, 255, 0.8) 60%, rgba(43, 130, 255, 0.4));
+    background: radial-gradient(circle at 50% 55%, rgba(240, 245, 255, 0.9), rgba(240, 245, 255, 0.9) 40%, rgba(225, 238, 255, 0.8) 60%, rgba(43, 130, 255, 0.4)); }
+    .ball.bubble:before {
+      background: -webkit-radial-gradient(130% 130% circle, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0) 46%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0.8) 58%, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 0) 100%);
+      background: radial-gradient(circle at 130% 130%, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0) 46%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0.8) 58%, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 0) 100%);
+      -webkit-filter: blur(0);
+      filter: blur(0);
+      height: 80%;
+      -webkit-transform: translateX(131%) translateY(58%) rotateZ(168deg) rotateX(10deg);
+      transform: translateX(131%) translateY(58%) rotateZ(168deg) rotateX(10deg);
+      width: 40%; }
+    .ball.bubble:after {
+      background: -webkit-radial-gradient(50% 80%, circle, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 74%, white 80%, white 84%, rgba(255, 255, 255, 0) 100%);
+      background: radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 74%, white 80%, white 84%, rgba(255, 255, 255, 0) 100%);
+      display: block; }
+
+
+@-webkit-keyframes bubble-anim {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1); }
+  20% {
+    -webkit-transform: scaleY(0.95) scaleX(1.05);
+    transform: scaleY(0.95) scaleX(1.05); }
+  48% {
+    -webkit-transform: scaleY(1.1) scaleX(0.9);
+    transform: scaleY(1.1) scaleX(0.9); }
+  68% {
+    -webkit-transform: scaleY(0.98) scaleX(1.02);
+    transform: scaleY(0.98) scaleX(1.02); }
+  80% {
+    -webkit-transform: scaleY(1.02) scaleX(0.98);
+    transform: scaleY(1.02) scaleX(0.98); }
+  97%, 100% {
+    -webkit-transform: scale(1);
+    transform: scale(1); } }
+
+
+@keyframes bubble-anim {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1); }
+  20% {
+    -webkit-transform: scaleY(0.95) scaleX(1.05);
+    transform: scaleY(0.95) scaleX(1.05); }
+  48% {
+    -webkit-transform: scaleY(1.1) scaleX(0.9);
+    transform: scaleY(1.1) scaleX(0.9); }
+  68% {
+    -webkit-transform: scaleY(0.98) scaleX(1.02);
+    transform: scaleY(0.98) scaleX(1.02); }
+  80% {
+    -webkit-transform: scaleY(1.02) scaleX(0.98);
+    transform: scaleY(1.02) scaleX(0.98); }
+  97%, 100% {
+    -webkit-transform: scale(1);
+    transform: scale(1); } }

@@ -1,0 +1,13 @@
+
+.inline-photo {
+  border: 1em solid #fff;
+  border-bottom: 4em solid #fff;
+  border-radius: .25em;
+  box-shadow: 1em 1em 2em .25em rgba(0,0,0,.2);
+  margin: 2em auto;
+  max-width: 600px;
+  -webkit-transform: rotateZ(-2deg);
+          transform: rotateZ(-2deg);
+  width: 90%;
+}
+

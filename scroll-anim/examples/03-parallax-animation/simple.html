@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>Scroll effects: Level up your CSS animation skills</title>
+    <!-- The default layout, resets and and text styling -->
+    <link href="stylesheets/main.css" rel="stylesheet">
+    <!-- Custom styling -->
+    <link href="stylesheets/simple.css" rel="stylesheet">
+  </head>
+  <body>
+    <article class="content">
+      <div class="one rellax" data-rellax-speed="4">Faster</div>
+      <div class="two">No parallax</div>
+      <div class="three rellax" data-rellax-speed="-4">Slower</div>
+    </article>
+    <script src="./javascripts/rellax.min.js"></script>
+    <script>
+      var rellax = new Rellax('.rellax');
+    </script>
+  </body>
+</html>

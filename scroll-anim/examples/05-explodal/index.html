@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>Scroll effects: Level up your CSS animation skills</title>
+    <!-- The default layout, resets and and text styling -->
+    <link href="stylesheets/main.css" rel="stylesheet">
+    <!-- Custom styling -->
+    <link href="stylesheets/scroll.css" rel="stylesheet">
+    <link href="stylesheets/modal.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="article-container">
+      <header class="header">
+        <h1 class="heading rellax-non-centered" data-rellax-speed="-5">Generic mouse-leave demo</h1>
+      </header>
+      <article class="content">
+
+        <p>Move mouse out of the page to see a modal</p>
+
+    </div>
+
+    <div class="modal-container">
+      <article class="modal">
+        <h2>Your modal title</h2>
+        <p>Some information for your visitors to read about this modal!</p>
+        <form action="https://www.getrevue.co/profile/cssanimation/add_subscriber" method="post">
+          <input id="subscribe-email" type="email" value="" placeholder="Your email" name="member[email]" class="email">
+          <input type="submit" name="member[subscribe]" class="button" value="Subscribe">
+        </form>
+      <p><a href="#" class="close" id="close-modal">No thanks</a></p>
+      </article>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="javascripts/mouseleave.js"></script>
+  </body>
+</html>
