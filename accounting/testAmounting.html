@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>测试Amounting</title>
+	<script type="text/javascript" src='./accounting.js'></script>
+	<script type="text/javascript">
+		function testFormat(number, precision, thousand, decimal, grouping, firstGrouping) {
+			accounting.format({number, precision, thousand, decimal, grouping, firstGrouping});
+		}
+		console.log('印度');
+		console.log(testFormat(123456789.235, 2, ",", ".", 2, 3));
+		console.log(testFormat(9.235, 2, ",", ".", 2, 3));
+		console.log(testFormat(789.235, 2, ",", ".", 2, 3));
+		console.log(testFormat(6789.235, 2, ",", ".", 2, 3));
+
+		console.log('印尼');
+		console.log(testFormat(123456789.235, 0, ".", "", 3));
+		console.log(testFormat(9.235, 0, ".", "", 3));
+		console.log(testFormat(789.235, 0, ".", "", 3));
+		console.log(testFormat(6789.235, 0, ".", "", 3));
+
+		console.log('台湾');
+		console.log(testFormat(123456789.235, 0, ".", ""));
+		console.log(testFormat(10000, 0, ".", ""));
+		console.log(testFormat(9.235, 0, ".", ""));
+		console.log(testFormat(789.235, 0, ".", ""));
+		console.log(testFormat(6789.235, 0, ".", ""));
+
+		console.log('土耳其');
+		console.log(testFormat(123456789.235, 2, ".", ",", "3"));
+		console.log(testFormat(9.235, 2, ".", ",", "3"));
+		console.log(testFormat(789.235, 2, ".", ",", "3"));
+		console.log(testFormat(6789.235, 2, ".", ",", "3"));
+
+		console.log('越南');
+		console.log(testFormat(123456789.235, 0, ".", "", "3"));
+		console.log(testFormat(9.235, 0, ".", "", "3"));
+		console.log(testFormat(789.235, 0, ".", "", "3"));
+		console.log(testFormat(6789.235, 0, ".", "", "3"));
+
+		console.log('新加坡');
+		console.log(testFormat(123456789.235, 2, ",", ".", "3"));
+		console.log(testFormat(9.235, 2, ",", ".", "3"));
+		console.log(testFormat(789.235, 2, ",", ".", "3"));
+		console.log(testFormat(6789.235, 2, ",", ".", "3"));
+
+		//不设置
+		console.log('默认');
+		console.log(testFormat(123456789.235));
+		console.log(testFormat(9.235));
+		console.log(testFormat(789.235));
+		console.log(testFormat(6789.235));
+	</script>
+</head>
+<body>
+
+</body>
+</html>

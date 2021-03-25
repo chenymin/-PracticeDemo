@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const createBalance = ({
+      // default state
+      state = 'uninitialized',
+      value = createBalance.empty
+    } = {}) => ({
+      __proto__: {
+        uninitialized: () => '--',
+        initialized: () => value,
+        format() {
+          return this[this.getState()](value);
+        },
+        getState: () => state,
+        set: value => {
+          const test = Number(value);
+          console.assert(!Number.isNaN(test), `setBalance Invalid value: ${value}`);
+          return createBalance({
+            state: 'initialized',
+            value
+          });
+        }
+      }
+    });
+    createBalance.empty = '0';
+    const setBalance = value => createBalance().set(value);
+    const emptyBalanceForDisplay = createBalance().format();
+    console.log(emptyBalanceForDisplay); // '--'
+    const balanceForDisplay = setBalance('25').format();
+    console.log(balanceForDisplay);
+  </script>
+
+  <script>
+    const log = x => console.log(x);
+    const exists = x => x != null;
+    const Just = value => ({
+      map: f => Just(f(value)),
+    });
+    const Nothing = () => ({
+      map: () => Nothing(),
+    });
+    const Maybe = value => exists(value) ? Just(value) : Nothing();
+    const empty = undefined;
+
+    Maybe(empty).map(log); // does not log
+    Maybe('Maybe Foo').map(log); // logs "Maybe Foo"
+  </script>
+</body>
+
+</html>
