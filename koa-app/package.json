@@ -49,7 +49,7 @@
     "jsx-loader": "^0.13.2",
     "less": "^2.7.1",
     "less-loader": "^4.0.3",
-    "node-sass": "^4.1.1",
+    "node-sass": "^7.0.0",
     "nodemon": "^1.11.0",
     "sass-loader": "^4.1.1",
     "style-loader": "^0.13.1",
