@@ -1,5 +1,5 @@
 /*!
- * accounting.js v0.4.2
+ * accounting.js v1.0.0
  * Copyright 2014 Open Exchange Rates
  *
  * Freely distributable under the MIT license.
@@ -17,7 +17,7 @@
 	var lib = {};
 
 	// Current version
-	lib.version = '0.0.1';
+	lib.version = '1.0.0';
 
 
 	/* --- Exposed settings --- */
@@ -27,7 +27,7 @@
 	lib.settings = {
 		currency: {
 			symbol : "$",		// default currency symbol is '$'
-			format : "%s%v",	// controls output: %s = symbol, %v = value (can be object, see docs)\
+			format : "%v %s",	// controls output: %s = symbol, %v = value (can be object, see docs)\
 			thousand : ",",		// thousands separator
 			decimal : ".",		// decimal point separator
 			precision : 2,		// decimal places
@@ -237,17 +237,18 @@
 	 *   grouping: 每组个数
 	 *   firstGrouping：第一组个数
 	 */
-	var formatNumber = lib.formatNumber = lib.format = function(params) {
-		var number = params.number || 0;
-		var precision = params.precision || 2;
+	var formatNumber = lib.formatNumber = lib.format = function(number, params) {
+		number = number || 0;
+		params = params || {};
+		var precision = params.precision === 0 ? 0 : (params.precision || 2);
 		var thousand = params.thousand || ',';
 		var decimal = params.decimal || '.';
-		var grouping = params.grouping || 3;
-		var firstGrouping = params.firstGrouping | 0;
+		var grouping = params.grouping === 0 ? 0 : (params.grouping || 3);
+		var firstGrouping = params.firstGrouping || 0;
 		// Resursively format arrays:
 		if (isArray(number)) {
 			return map(number, function(val) {
-				return formatNumber(val, precision, thousand, decimal);
+				return formatNumber(val, {precision, thousand, decimal, grouping, firstGrouping});
 			});
 		}
 
@@ -285,12 +286,12 @@
 				}
 			}
 		
-			mod = base.length > grouping ? base.length % grouping : 0;
+			var mod = base.length > grouping ? base.length % grouping : 0;
 	
 
 			var regExp = new RegExp('(\\d{' + grouping + '})(?=\\d)', 'g');
 			//不应该四舍五入
-			var 
+			// var 
 			// Format the number:
 			return negative + (mod ? base.substr(0, mod) + opts.thousand : "") + base.substr(mod).replace(regExp, "$1" + opts.thousand) + firstParts + (usePrecision ? opts.decimal + toFixed(Math.abs(number), usePrecision).split('.')[1] : "");
 		}
@@ -317,11 +318,20 @@
 	 *   firstGrouping：第一组个数
 	 *   symbol: %s %v. %s: 符号，%v: 数字
 	 */
-	var formatMoney = lib.formatMoney = function(params) {
+	var formatMoney = lib.formatMoney = function(number, params) {
+		number = number || 0;
+		params = params || {};
+		var precision = params.precision === 0 ? 0 : (params.precision || 2);
+		var thousand = params.thousand || ',';
+		var decimal = params.decimal || '.';
+		var symbol = params.symbol || '';
+		var format = params.format;
+		var grouping = params.grouping === 0 ? 0 : (params.grouping || 3);
+		var firstGrouping = params.firstGrouping || 0;
 		// Resursively format arrays:
 		if (isArray(number)) {
 			return map(number, function(val){
-				return formatMoney(val, symbol, precision, thousand, decimal, format);
+				return formatMoney(val, {symbol, precision, thousand, decimal, format, grouping, firstGrouping});
 			});
 		}
 
@@ -335,7 +345,9 @@
 					precision : precision,
 					thousand : thousand,
 					decimal : decimal,
-					format : format
+					format : format,
+					grouping: grouping,
+					firstGrouping: firstGrouping
 				}),
 				lib.settings.currency
 			),
@@ -343,19 +355,18 @@
 			// Check format (returns object with pos, neg and zero):
 			formats = checkCurrencyFormat(opts.format),
 
-			// Choose which format to use for this value:
+			// // Choose which format to use for this value:
 			useFormat = number > 0 ? formats.pos : number < 0 ? formats.neg : formats.zero;
 
 		// Return with currency symbol added:
 		var params  = {
-			number: Math.abs(number),
 			precision: checkPrecision(opts.precision),
 			thousand: opts.thousand,
-			decimal: opts.opts.decimal,
-			grouping: opts.opts.grouping,
+			decimal: opts.decimal,
+			grouping: opts.grouping,
 			firstGrouping: opts.firstGrouping
 		};
-		return useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(params));
+		return useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(Math.abs(number), params));
 	};
 
 
@@ -407,20 +418,20 @@
 					// Choose which format to use for this value (pos, neg or zero):
 					var useFormat = val > 0 ? formats.pos : val < 0 ? formats.neg : formats.zero,
 
-						// Format this value, push into formatted list and save the length:
-						var params  = {
-							number: Math.abs(val),
-							precision: checkPrecision(opts.precision),
-							thousand: opts.thousand,
-							decimal: opts.opts.decimal,
-							grouping: opts.opts.grouping,
-							firstGrouping: opts.firstGrouping
-						};
-						fVal = useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(params);
+					// Format this value, push into formatted list and save the length:
+					params  = {
+						number: Math.abs(val),
+						precision: checkPrecision(opts.precision),
+						thousand: opts.thousand,
+						decimal: opts.opts.decimal,
+						grouping: opts.opts.grouping,
+						firstGrouping: opts.firstGrouping
+					},
+					fVal = useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(params));
 
 					if (fVal.length > maxLength) maxLength = fVal.length;
-					return fVal;
-				}
+						return fVal;
+					}
 			});
 
 		// Pad each number in the list and send back the column of numbers:

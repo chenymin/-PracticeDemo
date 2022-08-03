@@ -1,58 +1,131 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>测试Amounting</title>
-	<script type="text/javascript" src='./accounting.js'></script>
+	<!-- <script type="text/javascript" src='https://cdn-third-party.payermax.com/accounting/1.0.1/accounting.min.js'></script> -->
+	<script type="text/javascript" src="./accounting.js"></script>
 	<script type="text/javascript">
-		function testFormat(number, precision, thousand, decimal, grouping, firstGrouping) {
-			accounting.format({number, precision, thousand, decimal, grouping, firstGrouping});
+		const formatRules = {
+			IDR: {
+				thousand: '.',
+				decimal: ',',
+				grouping: 3,
+				firstGrouping: 0,
+				precision: 0
+			},
+
+			INR: {
+				thousand: ',',
+				decimal: '.',
+				grouping: 2,
+				firstGrouping: 3,
+				precision: 2
+			},
+
+			KRW: {
+				thousand: ',',
+				decimal: '.',
+				grouping: 3,
+				firstGrouping: 0,
+				precision: 0
+			},
+
+			VND: {
+				thousand: '.',
+				decimal: ',',
+				grouping: 3,
+				firstGrouping: 0,
+				precision: 0
+			},
+
+			TWD: {
+				grouping: 0,
+				firstGrouping: 0,
+				precision: 0
+			},
+
+			COP: {
+				thousand: ',',
+				decimal: '.',
+				grouping: 3,
+				firstGrouping: 0,
+				precision: 0
+			},
+
+			TRY: {
+				thousand: '.',
+				decimal: ',',
+				grouping: 3,
+				firstGrouping: 0,
+				precision: 2
+			}
 		}
-		console.log('印度');
-		console.log(testFormat(123456789.235, 2, ",", ".", 2, 3));
-		console.log(testFormat(9.235, 2, ",", ".", 2, 3));
-		console.log(testFormat(789.235, 2, ",", ".", 2, 3));
-		console.log(testFormat(6789.235, 2, ",", ".", 2, 3));
+		function testFormat(number, currency) {
+			return accounting.format(number, formatRules[currency]);
+		}
+		// console.log('印度');
+		// console.log(testFormat(123456789.235, 'INR'));
+		// console.log(testFormat(9.235, 'INR'));
+		// console.log(testFormat(789.235, 'INR'));
+		// console.log(testFormat(6789.235, 'INR'));
+		// console.log(testFormat(66789.235, 'INR'));
 
-		console.log('印尼');
-		console.log(testFormat(123456789.235, 0, ".", "", 3));
-		console.log(testFormat(9.235, 0, ".", "", 3));
-		console.log(testFormat(789.235, 0, ".", "", 3));
-		console.log(testFormat(6789.235, 0, ".", "", 3));
+		// console.log('印尼');
+		// console.log(testFormat(123456789.235, 'IDR'));
+		// console.log(testFormat(9.235, 'IDR'));
+		// console.log(testFormat(789.235, 'IDR'));
+		// console.log(testFormat(6789.235, 'IDR'));
 
-		console.log('台湾');
-		console.log(testFormat(123456789.235, 0, ".", ""));
-		console.log(testFormat(10000, 0, ".", ""));
-		console.log(testFormat(9.235, 0, ".", ""));
-		console.log(testFormat(789.235, 0, ".", ""));
-		console.log(testFormat(6789.235, 0, ".", ""));
+		// console.log('台湾 不做任何处理可以不配直接展示');
+		// console.log(testFormat(123456789.235, 'TWD'));
+		// console.log(testFormat(10000, 'TWD'));
+		// console.log(testFormat(9.235, 'TWD'));
+		// console.log(testFormat(789.235, 'TWD'));
+		// console.log(testFormat(6789.235, 'TWD'));
 
-		console.log('土耳其');
-		console.log(testFormat(123456789.235, 2, ".", ",", "3"));
-		console.log(testFormat(9.235, 2, ".", ",", "3"));
-		console.log(testFormat(789.235, 2, ".", ",", "3"));
-		console.log(testFormat(6789.235, 2, ".", ",", "3"));
+		// console.log('土耳其');
+		// console.log(testFormat(123456789.235, 'TRY'));
+		// console.log(testFormat(9.235, 'TRY'));
+		// console.log(testFormat(789.235, 'TRY'));
+		// console.log(testFormat(6789.235, 'TRY'));
 
-		console.log('越南');
-		console.log(testFormat(123456789.235, 0, ".", "", "3"));
-		console.log(testFormat(9.235, 0, ".", "", "3"));
-		console.log(testFormat(789.235, 0, ".", "", "3"));
-		console.log(testFormat(6789.235, 0, ".", "", "3"));
+		// console.log('越南');
+		// console.log(testFormat(123456789.235, 'VND'));
+		// console.log(testFormat(9.235, 'VND'));
+		// console.log(testFormat(789.235, 'VND'));
+		// console.log(testFormat(6789.235, 'VND'));
 
-		console.log('新加坡');
-		console.log(testFormat(123456789.235, 2, ",", ".", "3"));
-		console.log(testFormat(9.235, 2, ",", ".", "3"));
-		console.log(testFormat(789.235, 2, ",", ".", "3"));
-		console.log(testFormat(6789.235, 2, ",", ".", "3"));
+		// console.log('新加坡');
+		// console.log(testFormat(123456789.235));
+		// console.log(testFormat(9.235));
+		// console.log(testFormat(789.235));
+		// console.log(testFormat(6789.235));
 
-		//不设置
-		console.log('默认');
-		console.log(testFormat(123456789.235));
-		console.log(testFormat(9.235));
-		console.log(testFormat(789.235));
-		console.log(testFormat(6789.235));
+		// //不设置
+		// console.log('默认');
+		// console.log(testFormat(123456789.235));
+		// console.log(testFormat(9.235));
+		// console.log(testFormat(789.235));
+		// console.log(testFormat(6789.235));
+
+		// 验证 toFixed
+		// 整数
+		// console.log(accounting.toFixed(1.456, 0));
+		// // 1位小数
+		// console.log(accounting.toFixed(1.456, 1));
+		// // 2位小数
+		// console.log(accounting.toFixed(1.456, 2));
+		// // 4位小数
+		// console.log(accounting.toFixed(1.456, 4));
+
+		// const num = accounting.formatMoney(0.1, {precision: 2, thousand: ',', decimal: '.', grouping: 2, firstGrouping: 3, symbol: 'INR'})
+		console.log(testFormat(99.555, 'IDR'));
 	</script>
 </head>
+
 <body>
 
 </body>
+
 </html>
